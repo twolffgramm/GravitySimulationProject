@@ -1,5 +1,6 @@
-package MoverAttractor;
+package de.continentale.zv.n_body_problem;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -22,21 +23,19 @@ public class SimulationPanel extends JPanel implements Runnable
   /** serialVersionUID */
   private static final long serialVersionUID = 1L;
 
-  static final int SIMULATION_WIDTH = 1000;
+  static final int SIMULATION_WIDTH = 1500;
   static final int SIMULATION_HEIGHT = 1000;
   static final Dimension SCREEN_SIZE = new Dimension(SIMULATION_WIDTH, SIMULATION_HEIGHT);
   Thread simulationThread;
   Image image;
   Graphics graphics;
   Random random;
-  Mover mover;
-  ArrayList<Mover> movers = new ArrayList<>();
-  Attractor attractor;
+  ArrayList<Attractor> attractors = new ArrayList<>();
+  Vector2D centerOfMass = new Vector2D();
 
   SimulationPanel()
   {
-    newAttractor();
-    newMover();
+    newAttractors();
     this.setFocusable(true);
     this.setPreferredSize(SCREEN_SIZE);
 
@@ -47,24 +46,23 @@ public class SimulationPanel extends JPanel implements Runnable
   /**
    * 
    */
-  public void newAttractor()
-  {
-    attractor = new Attractor(SIMULATION_WIDTH / 2, SIMULATION_HEIGHT / 2, 500);
-  }
-
-  /**
-   * 
-   */
-  public void newMover()
+  public void newAttractors()
   {
     random = new Random();
-    // mover = new Mover(random.nextInt(SIMULATION_WIDTH), random.nextInt(SIMULATION_HEIGHT), 100);
-    for (int i = 0; i <= 10; i++)
+    double[] positionX = { 415E6 + 291.001308E6, 415E6 - 291.001308E6, 415E6 };
+    double[] positionY = { 300E6 + 72.926259E6, 300E6 - 72.926259E6, 300E6 };
+    double factor = 1150;
+    double[] velX = { 0.93240737 / 2 * factor, 0.93240737 / 2 * factor, -0.93240737 * factor };
+    double[] velY = { -0.86473146 / 2 * factor, -0.86473146 / 2 * factor, 0.86473146 * factor };
+    double[] mass = { 5.972E24, 5.972E24, 5.972E24 };
+
+    for (int i = 0; i <= 2; i++)
     {
-      movers
-          .add(new Mover(random.nextInt(SIMULATION_WIDTH), random.nextInt(SIMULATION_HEIGHT), 100));
+      // attractors
+      // .add(new Attractor(random.nextInt(SIMULATION_WIDTH), random.nextInt(SIMULATION_HEIGHT),
+      // 100));
+      attractors.add(new Attractor(positionX[i], positionY[i], mass[i], velX[i], velY[i]));
     }
-    // mover = new Mover(SIMULATION_WIDTH / 2, SIMULATION_HEIGHT / 2 + 300, 100);
   }
 
   @Override
@@ -81,16 +79,18 @@ public class SimulationPanel extends JPanel implements Runnable
    */
   public void draw(Graphics g)
   {
-    attractor.draw(g);
-    for (int i = 0; i <= movers.size() - 1; i++)
+    for (int i = 0; i <= attractors.size() - 1; i++)
     {
-      movers.get(i)
-          .drawLines(g);
-      movers.get(i)
+      attractors.get(i)
           .draw(g);
     }
-    // mover.drawLines(g);
-    // mover.draw(g);
+
+    g.setColor(Color.RED);
+    int r = 5;
+    int x = (int) centerOfMass.getX() / 600000 - r / 2;
+    int y = (int) centerOfMass.getY() / 600000 - r / 2;
+    g.fillOval(x, y, r, r);
+
     Toolkit.getDefaultToolkit()
         .sync();
   }
@@ -100,35 +100,57 @@ public class SimulationPanel extends JPanel implements Runnable
    */
   public void move()
   {
-    attractor.move();
-    for (int i = 0; i <= movers.size() - 1; i++)
+    for (int i = 0; i <= attractors.size() - 1; i++)
     {
-      movers.get(i)
+      attractors.get(i)
+          .attract(attractors, i);
+      attractors.get(i)
           .move();
-      attractor.attract(movers.get(i));
     }
-    // mover.move();
-    // attractor.attract(mover);
+
+    double totalMass = 0;
+    Vector2D position;
+    double mass;
+    Vector2D velocity;
+    Vector2D momentum = new Vector2D();
+    double totalMomentum;
+    for (int i = 0; i <= attractors.size() - 1; i++)
+    {
+      totalMass += attractors.get(i).mass;
+      position = attractors.get(i).position;
+      velocity = attractors.get(i).velocity;
+      mass = attractors.get(i).mass;
+      momentum = momentum.add(velocity.multiply(mass));
+      centerOfMass = centerOfMass.add(position.multiply(mass));
+    }
+    centerOfMass = centerOfMass.multiply(1 / totalMass);
+    totalMomentum = Vector2D.magnitude(momentum);
+    // System.out.println(totalMomentum);
+
   }
 
   @Override
   public void run()
   {
-    long lastTime = System.nanoTime();
-    double amountOfTicks = 60;
-    double ns = 1000000000 / amountOfTicks;
-    double delta = 0;
-    while (true)
+    int t = 0;
+    int dt = 1;
+    int tMax = 1000000000;
+
+    while (t < tMax)
     {
-      long now = System.nanoTime();
-      delta += (now - lastTime) / ns;
-      lastTime = now;
-      if (delta >= 1)
-      {
-        move();
-        repaint();
-        delta--;
-      }
+      // try
+      // {
+      // TimeUnit.MILLISECONDS.sleep(1);
+      // }
+      // catch (InterruptedException e)
+      // {
+      // e.printStackTrace();
+      // }
+
+      move();
+      repaint();
+      t += dt;
+      // System.out.println(t);
     }
   }
 }

@@ -1,4 +1,4 @@
-package MoverAttractor;
+package de.continentale.zv.n_body_problem;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -20,9 +20,9 @@ public class Mover extends Rectangle
   /** serialVersionUID */
   private static final long serialVersionUID = 1L;
 
-  Vector2D pos;
-  Vector2D vel;
-  Vector2D acc;
+  Vector2D position;
+  Vector2D velocity;
+  Vector2D acceleration;
   Vector2D bla;
   double mass;
   double radius;
@@ -31,11 +31,11 @@ public class Mover extends Rectangle
   Mover(double x, double y, double m)
   {
     Random random = new Random();
-    this.pos = new Vector2D(x, y);
+    this.position = new Vector2D(x, y);
     // this.vel = new Vector2D(random.nextDouble(), random.nextDouble());
     // this.vel = this.vel.multiply(10);
-    this.vel = new Vector2D(2, 0);
-    this.acc = new Vector2D();
+    this.velocity = new Vector2D(2, 0);
+    this.acceleration = new Vector2D();
     this.mass = m;
     this.radius = Math.sqrt(this.mass) * 2;
   }
@@ -47,7 +47,7 @@ public class Mover extends Rectangle
   {
     force = force.multiply(1 / this.mass);
     this.bla = force;
-    this.acc = this.acc.add(force);
+    this.acceleration = this.acceleration.add(force);
   }
 
   /**
@@ -55,9 +55,9 @@ public class Mover extends Rectangle
    */
   public void move()
   {
-    this.vel = this.vel.add(this.acc);
-    this.pos = this.pos.add(this.vel);
-    this.acc.set(0, 0);
+    this.velocity = this.velocity.add(this.acceleration);
+    this.position = this.position.add(this.velocity);
+    this.acceleration.set(0, 0);
   }
 
   /**
@@ -67,16 +67,16 @@ public class Mover extends Rectangle
   {
     g.setColor(Color.GRAY);
     int r = (int) this.radius;
-    int x = (int) this.pos.getX() - r / 2;
-    int y = (int) this.pos.getY() - r / 2;
+    int x = (int) this.position.getX() - r / 2;
+    int y = (int) this.position.getY() - r / 2;
     g.fillOval(x, y, r, r);
   }
 
   void drawLines(Graphics g)
   {
     Graphics2D g2d = (Graphics2D) g;
-    int x1 = (int) this.pos.getX();
-    int y1 = (int) this.pos.getY();
+    int x1 = (int) this.position.getX();
+    int y1 = (int) this.position.getY();
     double x2 = this.bla.getX() * 100;
     double y2 = this.bla.getY() * 100;
     int x3 = (int) x2;

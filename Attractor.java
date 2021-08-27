@@ -1,7 +1,9 @@
-package MoverAttractor;
+package de.continentale.zv.n_body_problem;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * TODO Klasse kommentieren
@@ -13,34 +15,65 @@ import java.awt.Graphics;
  */
 public class Attractor
 {
-  Vector2D pos;
-  Vector2D vel;
-  Vector2D acc;
+  Vector2D position;
+  Vector2D velocity;
+  Vector2D acceleration;
   double mass;
   double radius;
+  Random random;
 
-  Attractor(double x, double y, double m)
+  Attractor(double x, double y, double m, double vX, double vY)
   {
-    this.pos = new Vector2D(x, y);
-    this.vel = new Vector2D(0, 0);
-    this.acc = new Vector2D();
+    random = new Random();
+    this.position = new Vector2D(x, y);
+    this.velocity = new Vector2D(vX, vY);
+    this.acceleration = new Vector2D();
     this.mass = m;
-    this.radius = Math.sqrt(this.mass) * 2;
+    // this.radius = Math.sqrt(this.mass) * 2;
+    this.radius = 20;
   }
 
   /**
+   * @param attractors
+   * @param iterator
    * @param mover
    */
-  public void attract(Mover mover)
+  public void attract(ArrayList<Attractor> attractors, int iterator)
   {
-    Vector2D force;
-    force = this.pos.subtract(mover.pos);
-    double distance = Vector2D.magnitude(force);
-    double distanceSq = distance * distance;
-    final double G = 5;
-    double strength = G * (this.mass * mover.mass) / distanceSq;
-    force = force.setMagnitude(strength);
-    mover.applyForce(force);
+    ArrayList<Vector2D> forces = new ArrayList<>();
+    Vector2D force = new Vector2D();
+    final double G = 6.6743E-11;
+
+    for (int i = 0; i <= attractors.size() - 1; i++)
+    {
+      if (i == iterator)
+      {
+        continue;
+      }
+      // forces.add(this.position.subtract(attractors.get(i).position));
+      forces.add(attractors.get(i).position.subtract(this.position));
+      double distance = Vector2D.magnitude(forces.get(forces.size() - 1));
+      double distanceSq = distance * distance;
+      double strength = G * this.mass * attractors.get(i).mass / distanceSq;
+      forces.set(forces.size() - 1, forces.get(forces.size() - 1)
+          .setMagnitude(strength));
+    }
+
+    for (int i = 0; i <= forces.size() - 1; i++)
+    {
+      force = force.add(forces.get(i));
+    }
+
+    this.applyForce(force);
+  }
+
+  /**
+   * @param force
+   */
+  public void applyForce(Vector2D force)
+  {
+    force = force.multiply(1 / this.mass);
+    this.acceleration = this.acceleration.add(force);
   }
 
   /**
@@ -48,7 +81,9 @@ public class Attractor
    */
   public void move()
   {
-    this.pos = this.pos.add(this.vel);
+    this.velocity = this.velocity.add(this.acceleration);
+    this.position = this.position.add(this.velocity);
+    this.acceleration.set(0, 0);
   }
 
   /**
@@ -58,8 +93,8 @@ public class Attractor
   {
     g.setColor(Color.WHITE);
     int r = (int) this.radius;
-    int x = (int) this.pos.getX() - r / 2;
-    int y = (int) this.pos.getY() - r / 2;
+    int x = (int) this.position.getX() / 600000 - r / 2;
+    int y = (int) this.position.getY() / 600000 - r / 2;
     g.fillOval(x, y, r, r);
   }
 }

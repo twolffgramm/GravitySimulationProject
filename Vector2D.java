@@ -1,4 +1,4 @@
-package MoverAttractor;
+package de.continentale.zv.n_body_problem;
 
 /**
  * TODO Klasse kommentieren
