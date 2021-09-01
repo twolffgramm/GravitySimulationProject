@@ -39,7 +39,7 @@ public class Szenario
                 new Vector2D(0.93240737 / 2 * factor, -0.86473146 / 2 * factor),
                 new Vector2D(-0.93240737 * factor, 0.86473146 * factor) };
         this.massen = new double[] { 5.972E24, 5.972E24, 5.972E24 };
-        this.dt = 360;
+        this.dt = 2500;
         this.zoomFaktor = 750000;
         break;
 
@@ -67,7 +67,7 @@ public class Szenario
             new Vector2D(21970, 0), new Vector2D(12440, 0) };
         this.massen =
             new double[] { 1.989E30, 0.330E24, 4.867E24, 5.972E24, 0.642E24, 1898.190E24 };
-        this.dt = 3600;
+        this.dt = 36000;
         this.zoomFaktor = 2000000000;
         break;
 

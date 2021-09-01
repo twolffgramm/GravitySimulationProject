@@ -6,6 +6,7 @@ import java.awt.Container;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 
+import de.continentale.zv.n_body_simulation.controller.ButtonController;
 import de.continentale.zv.n_body_simulation.model.SimulationsModel;
 
 /**
@@ -64,5 +65,13 @@ public class SimulationsView extends JFrame
   void paint()
   {
     this.simulationsPanel.repaint();
+  }
+
+  /**
+   * @param buttonController
+   */
+  public void registerListener(ButtonController buttonController)
+  {
+    this.buttonPanel.registerListener(buttonController);
   }
 }

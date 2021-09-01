@@ -1,10 +1,13 @@
 package de.continentale.zv.n_body_simulation.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import de.continentale.zv.n_body_simulation.controller.ButtonController;
 
 /**
  * TODO Klasse kommentieren
@@ -46,5 +49,27 @@ public class ButtonPanel extends JPanel
     this.add(this.start);
     this.add(this.pause);
     this.add(this.zuruecksetzen);
+
+    this.szenarien.setActionCommand("szenarien");
+    this.start.setActionCommand("start");
+    this.pause.setActionCommand("pause");
+    this.zuruecksetzen.setActionCommand("zuruecksetzen");
   }
+
+  /**
+   * @param buttonController
+   */
+  public void registerListener(ButtonController buttonController)
+  {
+    Component[] components = this.getComponents();
+    for (Component component : components)
+    {
+      if (component instanceof JButton)
+      {
+        JButton button = (JButton) component;
+        button.addActionListener(buttonController);
+      }
+    }
+  }
+
 }
