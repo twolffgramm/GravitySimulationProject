@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <skin>
+    <groupId>de.continentale.vu</groupId>
+    <artifactId>maven-conti-theme</artifactId>
+    <version>1.5.0-SNAPSHOT</version>
+  </skin>
+  <body>
+
+    <menu name="Dokumentation">
+      <item name="Release Notes" href="release-notes.html" />
+      <item name="Benutzerhandbuch" href="content.html" />
+      <item name="Einführung" href="intro.html" />
+    </menu>
+    <menu ref="reports" />
+
+  </body>
+</project>
