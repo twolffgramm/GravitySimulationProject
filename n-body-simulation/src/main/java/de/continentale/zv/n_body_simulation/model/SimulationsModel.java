@@ -1,5 +1,6 @@
 package de.continentale.zv.n_body_simulation.model;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -97,10 +98,25 @@ public class SimulationsModel
   /**
    * @param aenderung
    */
-  public void setZoomFaktor(int aenderung)
+  public void setZoomFaktor(double aenderung)
   {
-    aenderung = (int) (aenderung * this.zoomFaktor / 10);
+    aenderung = aenderung * this.zoomFaktor / 10;
     this.zoomFaktor -= aenderung;
+  }
+
+  /**
+   * @param aenderung
+   */
+  public void setRadius(double aenderung)
+  {
+    for (int i = 0; i < planeten.size(); i++)
+    {
+      double radius = planeten.get(i)
+          .getRadius();
+      radius = radius + aenderung / 2;
+      planeten.get(i)
+          .setRadius(radius);
+    }
   }
 
   /**
@@ -116,46 +132,52 @@ public class SimulationsModel
    */
   public String getAnimationsGeschwindigkeitString()
   {
-    String animationsGeschwindigkeitLabel = "";
     double berechnungenProSekunde = dt * 1000;
 
     if (berechnungenProSekunde < 60)
     {
-      animationsGeschwindigkeitLabel +=
-          String.format("%.4f", berechnungenProSekunde) + " Sekunden / Sekunde";
-      return animationsGeschwindigkeitLabel;
+      return String.format("%.4f", berechnungenProSekunde) + " Sekunden / Sekunde";
     }
     berechnungenProSekunde /= 60;
     if (berechnungenProSekunde < 60)
     {
-      animationsGeschwindigkeitLabel +=
-          String.format("%.4f", berechnungenProSekunde) + " Minuten / Sekunde";
-      return animationsGeschwindigkeitLabel;
+      return String.format("%.4f", berechnungenProSekunde) + " Minuten / Sekunde";
     }
     berechnungenProSekunde /= 60;
     if (berechnungenProSekunde < 24)
     {
-      animationsGeschwindigkeitLabel +=
-          String.format("%.4f", berechnungenProSekunde) + " Stunden / Sekunde";
-      return animationsGeschwindigkeitLabel;
+      return String.format("%.4f", berechnungenProSekunde) + " Stunden / Sekunde";
     }
     berechnungenProSekunde /= 24;
     if (berechnungenProSekunde < 365)
     {
-      animationsGeschwindigkeitLabel +=
-          String.format("%.4f", berechnungenProSekunde) + " Tage / Sekunde";
-      return animationsGeschwindigkeitLabel;
+      return String.format("%.4f", berechnungenProSekunde) + " Tage / Sekunde";
     }
     berechnungenProSekunde /= 365;
     if (berechnungenProSekunde < 100)
     {
-      animationsGeschwindigkeitLabel +=
-          String.format("%.4f", berechnungenProSekunde) + " Jahre / Sekunde";
-      return animationsGeschwindigkeitLabel;
+      return String.format("%.4f", berechnungenProSekunde) + " Jahre / Sekunde";
     }
     berechnungenProSekunde /= 100;
-    animationsGeschwindigkeitLabel +=
-        String.format("%.4f", berechnungenProSekunde) + " Jahrhunderte / Sekunde";
-    return animationsGeschwindigkeitLabel;
+    return String.format("%.4f", berechnungenProSekunde) + " Jahrhunderte / Sekunde";
+  }
+
+  /**
+   * @param klick
+   * @param ursprung
+   */
+  public void planetHinzufuegen(Point klick, Point ursprung)
+  {
+    this.planeten.add(new Planet(
+        new Vector2D((klick.x - ursprung.x) * zoomFaktor, (klick.y - ursprung.y) * zoomFaktor),
+        new Vector2D(), 5E24));
+  }
+
+  /**
+   * @param szenario
+   */
+  public void setAktuellesSzenario(int szenario)
+  {
+    this.aktuellesSzenario = szenario;
   }
 }

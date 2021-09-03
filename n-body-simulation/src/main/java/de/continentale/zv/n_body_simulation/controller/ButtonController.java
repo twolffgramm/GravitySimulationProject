@@ -1,14 +1,10 @@
 package de.continentale.zv.n_body_simulation.controller;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -22,12 +18,11 @@ import javax.swing.event.ChangeListener;
  *          $Date:$<br/>
  *          $Author:$
  */
-public class ButtonController implements ActionListener, MouseListener, MouseWheelListener,
-    ChangeListener, MouseMotionListener
+public class ButtonController implements ActionListener, MouseListener, ChangeListener
 {
   SimulationsController simulationsController;
-  boolean vorherGedrueckt;
-  Point mausPunkt;
+  boolean gestartet;
+  boolean sichtbarkeit;
 
   /**
    * ButtonController Konstruktor.
@@ -37,7 +32,8 @@ public class ButtonController implements ActionListener, MouseListener, MouseWhe
   public ButtonController(SimulationsController simulationsController)
   {
     this.simulationsController = simulationsController;
-    vorherGedrueckt = false;
+    gestartet = false;
+    sichtbarkeit = true;
   }
 
   /**
@@ -52,15 +48,16 @@ public class ButtonController implements ActionListener, MouseListener, MouseWhe
     String command = event.getActionCommand();
     if (command.equals("szenarien"))
     {
-
+      simulationsController.simulationsView.setMenuePanelSichtbarkeit(sichtbarkeit);
+      sichtbarkeit = !sichtbarkeit;
     }
     else if (command.equals("start"))
     {
-      if (vorherGedrueckt == false)
+      if (gestartet == false)
       {
         simulationsController.positionsThread.start();
         simulationsController.repaintThread.start();
-        vorherGedrueckt = true;
+        gestartet = true;
       }
       simulationsController.positionsThread.resume();
       simulationsController.repaintThread.resume();
@@ -77,9 +74,53 @@ public class ButtonController implements ActionListener, MouseListener, MouseWhe
 
       simulationsController.simulationsModel.modelZuruecksetzen();
       simulationsController.simulationsView.repaint();
-      simulationsController.simulationsView.buttonPanel.sliderZuruecksetzen();
-      simulationsController.simulationsView.simulationsPanel.zuruecksetzen();
+      simulationsController.simulationsView.zuruecksetzen();
     }
+    else if (command.equals("editor"))
+    {
+      if (gestartet)
+      {
+        simulationsController.positionsThread.suspend();
+        simulationsController.repaintThread.suspend();
+      }
+      simulationsController.simulationsView.wechsleModus();
+    }
+    else if (command.equals("Figure-Eight"))
+    {
+      szenarioSetzen(1);
+    }
+    else if (command.equals("Sonnensystem"))
+    {
+      szenarioSetzen(2);
+    }
+    else if (command.equals("Binary-Star System"))
+    {
+      szenarioSetzen(3);
+    }
+    else if (command.equals("Chaos Dreieck"))
+    {
+      szenarioSetzen(4);
+    }
+  }
+
+  @SuppressWarnings("deprecation")
+  void szenarioSetzen(int szenario)
+  {
+    simulationsController.positionsThread.suspend();
+    simulationsController.repaintThread.suspend();
+
+    if (simulationsController.simulationsView.getIsEditor())
+    {
+      simulationsController.simulationsView.wechsleModus();
+    }
+
+    simulationsController.simulationsModel.setAktuellesSzenario(szenario);
+    simulationsController.simulationsModel.modelZuruecksetzen();
+    simulationsController.simulationsView.zuruecksetzen();
+    simulationsController.simulationsView.setMenuePanelSichtbarkeit(sichtbarkeit);
+    simulationsController.simulationsView.repaint();
+
+    sichtbarkeit = !sichtbarkeit;
   }
 
   /**
@@ -101,7 +142,7 @@ public class ButtonController implements ActionListener, MouseListener, MouseWhe
   @Override
   public void mousePressed(MouseEvent event)
   {
-    mausPunkt = event.getPoint();
+
   }
 
   /**
@@ -143,19 +184,6 @@ public class ButtonController implements ActionListener, MouseListener, MouseWhe
   /**
    * {@inheritDoc}
    * 
-   * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
-   */
-  @Override
-  public void mouseWheelMoved(MouseWheelEvent event)
-  {
-    int aenderung = event.getWheelRotation();
-    simulationsController.simulationsModel.setZoomFaktor(aenderung);
-    simulationsController.simulationsView.repaint();
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
   @Override
@@ -164,32 +192,16 @@ public class ButtonController implements ActionListener, MouseListener, MouseWhe
     JSlider source = (JSlider) event.getSource();
     int neueDt = source.getValue();
     simulationsController.simulationsModel.setDt(neueDt);
-    simulationsController.simulationsView.buttonPanel.updateSliderLabel();
-  }
+    simulationsController.simulationsView.updateSlider();
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
-   */
-  @Override
-  public void mouseDragged(MouseEvent e)
-  {
-    int differenzX = e.getX() - mausPunkt.x;
-    int differenzY = e.getY() - mausPunkt.y;
-    Point differenz = new Point(differenzX, differenzY);
-    simulationsController.simulationsView.simulationsPanel.updateUrsprung(differenz);
-    simulationsController.simulationsView.repaint();
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
-   */
-  @Override
-  public void mouseMoved(MouseEvent e)
-  {
-
+    // if (source instanceof JSlider)
+    // {
+    // JSlider slider = (JSlider) source;
+    // String name = slider.getName();
+    // if ("funky".equals(name))
+    // {
+    // // Do funky stuff
+    // }
+    // }
   }
 }

@@ -21,42 +21,46 @@ public class Planet
   String farbe;
   ArrayList<Vector2D> vorherigePositionen;
 
-  Planet(Vector2D position, Vector2D geschwindigkeit, double masse)
+  /**
+   * Planet Konstruktor.
+   *
+   * @param position
+   * @param geschwindigkeit
+   * @param masse
+   */
+  public Planet(Vector2D position, Vector2D geschwindigkeit, double masse)
   {
     this.position = position;
     this.geschwindigkeit = geschwindigkeit;
     this.masse = masse;
     this.impuls = this.geschwindigkeit.multiply(this.masse);
-    // this.radius = Math.sqrt(this.mass) * 2;
     this.radius = 20;
+    this.farbe = "#FFFFFF";
     vorherigePositionen = new ArrayList<>();
     vorherigePositionen.add(this.position);
   }
 
-  Planet(Vector2D position, Vector2D geschwindigkeit, double masse, double radius, String farbe)
+  /**
+   * Planet Konstruktor.
+   *
+   * @param position
+   * @param geschwindigkeit
+   * @param masse
+   * @param radius
+   * @param farbe
+   */
+  public Planet(Vector2D position, Vector2D geschwindigkeit, double masse, double radius,
+      String farbe)
   {
     this.position = position;
     this.geschwindigkeit = geschwindigkeit;
     this.masse = masse;
     this.impuls = this.geschwindigkeit.multiply(this.masse);
-    // this.radius = Math.sqrt(this.mass) * 2;
     this.radius = radius;
     this.farbe = farbe;
     vorherigePositionen = new ArrayList<>();
     vorherigePositionen.add(this.position);
   }
-  // Planet(double positionX, double positionY, double geschwindigkeitX, double geschwindigkeitY,
-  // double masse)
-  // {
-  // random = new Random();
-  // this.position = new Vector2D(positionX, positionY);
-  // this.geschwindigkeit = new Vector2D(geschwindigkeitX, geschwindigkeitY);
-  // this.beschleunigung = new Vector2D();
-  // this.masse = masse;
-  // this.impuls = this.geschwindigkeit.multiply(this.masse);
-  // // this.radius = Math.sqrt(this.mass) * 2;
-  // this.radius = 20;
-  // }
 
   /**
    * @return .
@@ -160,6 +164,14 @@ public class Planet
   public void setMasse(double masse)
   {
     this.masse = masse;
+  }
+
+  /**
+   * @param radius
+   */
+  public void setRadius(double radius)
+  {
+    this.radius = radius;
   }
 
   /**

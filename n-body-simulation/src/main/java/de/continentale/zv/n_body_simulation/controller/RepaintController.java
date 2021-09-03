@@ -27,7 +27,6 @@ public class RepaintController implements Runnable
     this.simulationsView = simulationsView;
   }
 
-  @SuppressWarnings("unused")
   @Override
   public void run()
   {

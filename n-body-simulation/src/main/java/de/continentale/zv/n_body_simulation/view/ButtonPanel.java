@@ -35,14 +35,16 @@ public class ButtonPanel extends JPanel
   private static final Dimension FRAME_GROESSE = new Dimension(BREITE, HOEHE);
   private static final int DT_MIN = 0;
   private static final int DT_MAX = 100000;
+
   SimulationsModel simulationsModel;
   JButton szenarien;
   JButton start;
   JButton pause;
   JButton zuruecksetzen;
-  JPanel platzhalter;
-  JPanel platzhalter2;
-  JSlider animationsGeschwindigkeit;
+  JButton editor;
+  JPanel platzhalterLinks;
+  JPanel platzhalterRechts;
+  JSlider animationsGeschwindigkeitSlider;
   JLabel animationsGeschwindigkeitLabel;
 
   /**
@@ -57,19 +59,24 @@ public class ButtonPanel extends JPanel
     this.setFocusable(true);
     this.setPreferredSize(FRAME_GROESSE);
     this.setBackground(Color.decode("#1F1F1F"));
-    platzhalter = new JPanel();
-    platzhalter.setPreferredSize(new Dimension(355, 50));
-    platzhalter.setBackground(Color.decode("#1F1F1F"));
-    platzhalter2 = new JPanel();
-    platzhalter2.setPreferredSize(new Dimension(405, 50));
-    platzhalter2.setBackground(Color.decode("#1F1F1F"));
-    animationsGeschwindigkeit =
+
+    platzhalterLinks = new JPanel();
+    platzhalterLinks.setPreferredSize(new Dimension(295, 50));
+    platzhalterLinks.setBackground(Color.decode("#1F1F1F"));
+
+    platzhalterRechts = new JPanel();
+    platzhalterRechts.setPreferredSize(new Dimension(405, 50));
+    platzhalterRechts.setBackground(Color.decode("#1F1F1F"));
+
+    animationsGeschwindigkeitSlider =
         new JSlider(JSlider.HORIZONTAL, DT_MIN, DT_MAX, this.simulationsModel.getDt());
-    animationsGeschwindigkeit.setPreferredSize(new Dimension(300, 20));
-    animationsGeschwindigkeit.setBackground(Color.decode("#1F1F1F"));
+    animationsGeschwindigkeitSlider.setPreferredSize(new Dimension(300, 20));
+    animationsGeschwindigkeitSlider.setBackground(Color.decode("#1F1F1F"));
+
     animationsGeschwindigkeitLabel =
         new JLabel(this.simulationsModel.getAnimationsGeschwindigkeitString());
     animationsGeschwindigkeitLabel.setForeground(Color.WHITE);
+    animationsGeschwindigkeitSlider.setName("animationsGeschwindigkeit");
 
     try
     {
@@ -77,50 +84,59 @@ public class ButtonPanel extends JPanel
       Image startIcon = ImageIO.read(getClass().getResource("/Play.png"));
       Image pauseIcon = ImageIO.read(getClass().getResource("/Pause.png"));
       Image zuruecksetzenIcon = ImageIO.read(getClass().getResource("/Reset.png"));
+
       szenarienIcon = szenarienIcon.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
       startIcon = startIcon.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
       pauseIcon = pauseIcon.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
       zuruecksetzenIcon = zuruecksetzenIcon.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+
       szenarien = new JButton(new ImageIcon(szenarienIcon));
       start = new JButton(new ImageIcon(startIcon));
       pause = new JButton(new ImageIcon(pauseIcon));
       zuruecksetzen = new JButton(new ImageIcon(zuruecksetzenIcon));
+      editor = new JButton("Editor");
     }
     catch (Exception ex)
     {
       System.out.println(ex);
     }
 
-    szenarien.setPreferredSize(new Dimension(50, 50));
-    start.setPreferredSize(new Dimension(50, 50));
-    pause.setPreferredSize(new Dimension(50, 50));
-    zuruecksetzen.setPreferredSize(new Dimension(50, 50));
+    Dimension buttonGroesse = new Dimension(50, 50);
+    szenarien.setPreferredSize(buttonGroesse);
+    start.setPreferredSize(buttonGroesse);
+    pause.setPreferredSize(buttonGroesse);
+    zuruecksetzen.setPreferredSize(buttonGroesse);
+    editor.setPreferredSize(buttonGroesse);
 
     Border keinRand = BorderFactory.createEmptyBorder();
     szenarien.setBorder(keinRand);
     start.setBorder(keinRand);
     pause.setBorder(keinRand);
     zuruecksetzen.setBorder(keinRand);
+    editor.setBorder(keinRand);
 
     szenarien.setBackground(Color.decode("#131313"));
     start.setBackground(Color.decode("#131313"));
     pause.setBackground(Color.decode("#131313"));
     zuruecksetzen.setBackground(Color.decode("#131313"));
+    editor.setBackground(Color.decode("#131313"));
 
     szenarien.setActionCommand("szenarien");
     start.setActionCommand("start");
     pause.setActionCommand("pause");
     zuruecksetzen.setActionCommand("zuruecksetzen");
+    editor.setActionCommand("editor");
 
     this.add(szenarien);
-    this.add(platzhalter);
+    this.add(editor);
+    this.add(platzhalterLinks);
     this.add(start);
     this.add(pause);
     this.add(zuruecksetzen);
-    this.add(platzhalter2);
-    this.platzhalter2.add(animationsGeschwindigkeit);
-    this.platzhalter2.add(animationsGeschwindigkeitLabel);
+    this.add(platzhalterRechts);
 
+    this.platzhalterRechts.add(animationsGeschwindigkeitSlider);
+    this.platzhalterRechts.add(animationsGeschwindigkeitLabel);
   }
 
   /**
@@ -137,8 +153,9 @@ public class ButtonPanel extends JPanel
         button.addActionListener(buttonController);
         button.addMouseListener(buttonController);
       }
-      animationsGeschwindigkeit.addChangeListener(buttonController);
     }
+    animationsGeschwindigkeitSlider.addChangeListener(buttonController);
+
   }
 
   /**
@@ -146,7 +163,7 @@ public class ButtonPanel extends JPanel
    */
   public void sliderZuruecksetzen()
   {
-    this.animationsGeschwindigkeit.setValue(this.simulationsModel.getDt());
+    this.animationsGeschwindigkeitSlider.setValue(this.simulationsModel.getDt());
   }
 
   /**
