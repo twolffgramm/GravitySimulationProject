@@ -38,10 +38,12 @@ public class SimulationsPanel extends JPanel
   Graphics graphics;
   SimulationsModel simulationsModel;
   Image hintergrund;
-  /** ursprung */
-  public Point ursprung;
+  Point ursprung;
   Point linksOben;
   Dimension frameGroesse;
+  boolean mausGedrueckt;
+  Point koordinatenMausGedrueckt;
+  Point geschwindigkeitsLinie = new Point();
 
   /**
    * SimulationsPanel Konstruktor.
@@ -94,8 +96,7 @@ public class SimulationsPanel extends JPanel
    */
   public void draw(Graphics g)
   {
-    g.drawImage(hintergrund, linksOben.x, linksOben.y, null);
-    // g.drawImage(hintergrund, 0, 0, null);
+    g.drawImage(hintergrund, linksOben.x - 200, linksOben.y, null);
     for (int i = 0; i <= simulationsModel.getPlaneten()
         .size() - 1; i++)
     {
@@ -153,6 +154,19 @@ public class SimulationsPanel extends JPanel
                 .getY() / simulationsModel.getZoomFaktor());
       }
       g2.draw(path);
+
+      if (mausGedrueckt)
+      {
+        g.setColor(Color.LIGHT_GRAY);
+        r = 20;
+        x = koordinatenMausGedrueckt.x - r / 2;
+        y = koordinatenMausGedrueckt.y - r / 2;
+        g.fillOval(x, y, r, r);
+
+        x = koordinatenMausGedrueckt.x;
+        y = koordinatenMausGedrueckt.y;
+        g.drawLine(x, y, x + geschwindigkeitsLinie.x, y + geschwindigkeitsLinie.y);
+      }
     }
   }
 
@@ -173,4 +187,40 @@ public class SimulationsPanel extends JPanel
     ursprung.setLocation(breite / 2, hoehe / 2);
     linksOben.setLocation(-breite / 2, -hoehe / 2);
   }
+
+  /**
+   * @return .
+   */
+  public Point getUrsprung()
+  {
+    return this.ursprung;
+  }
+
+  /**
+   * @param mausGedrueckt
+   * @param koordinatenMausGedrueckt
+   */
+  public void setMausGedrueckt(boolean mausGedrueckt, Point koordinatenMausGedrueckt)
+  {
+    this.mausGedrueckt = mausGedrueckt;
+    this.koordinatenMausGedrueckt = koordinatenMausGedrueckt;
+  }
+
+  /**
+   * @param geschwindigkeitsLinie
+   */
+  public void setGeschwindigkeitsLinie(Point geschwindigkeitsLinie)
+  {
+    this.geschwindigkeitsLinie.setLocation(geschwindigkeitsLinie.x / 4,
+        geschwindigkeitsLinie.y / 4);
+  }
+
+  /**
+   * @return .
+   */
+  public Point getLinksOben()
+  {
+    return this.linksOben;
+  }
+
 }

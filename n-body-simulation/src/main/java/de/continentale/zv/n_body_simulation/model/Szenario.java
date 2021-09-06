@@ -34,6 +34,13 @@ public class Szenario
   {
     switch (szenarioNummer)
     {
+      case 0:
+        this.positionen = new Vector2D[0];
+        this.geschwindigkeiten = new Vector2D[0];
+        this.massen = new double[0];
+        this.dt = 150;
+        this.zoomFaktor = 750000;
+        break;
       case 1: // Figure-Eight mit Erd-Massen und stellaren Abständen
         this.positionen = new Vector2D[] { new Vector2D(291.001308E6, 72.926259E6),
             new Vector2D(-291.001308E6, -72.926259E6), new Vector2D(0, 0) };

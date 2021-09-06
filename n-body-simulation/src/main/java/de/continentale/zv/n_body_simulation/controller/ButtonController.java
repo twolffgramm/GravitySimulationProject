@@ -83,23 +83,49 @@ public class ButtonController implements ActionListener, MouseListener, ChangeLi
         simulationsController.positionsThread.suspend();
         simulationsController.repaintThread.suspend();
       }
+      szenarioSetzen(0);
       simulationsController.simulationsView.wechsleModus();
+      simulationsController.simulationsView.erstelleSlider();
     }
     else if (command.equals("Figure-Eight"))
     {
       szenarioSetzen(1);
+      simulationsController.simulationsView.setMenuePanelSichtbarkeit(sichtbarkeit);
+      sichtbarkeit = !sichtbarkeit;
+      if (simulationsController.simulationsView.getIsEditor())
+      {
+        simulationsController.simulationsView.wechsleModus();
+      }
     }
     else if (command.equals("Sonnensystem"))
     {
       szenarioSetzen(2);
+      simulationsController.simulationsView.setMenuePanelSichtbarkeit(sichtbarkeit);
+      sichtbarkeit = !sichtbarkeit;
+      if (simulationsController.simulationsView.getIsEditor())
+      {
+        simulationsController.simulationsView.wechsleModus();
+      }
     }
     else if (command.equals("Binary-Star System"))
     {
       szenarioSetzen(3);
+      simulationsController.simulationsView.setMenuePanelSichtbarkeit(sichtbarkeit);
+      sichtbarkeit = !sichtbarkeit;
+      if (simulationsController.simulationsView.getIsEditor())
+      {
+        simulationsController.simulationsView.wechsleModus();
+      }
     }
     else if (command.equals("Chaos Dreieck"))
     {
       szenarioSetzen(4);
+      simulationsController.simulationsView.setMenuePanelSichtbarkeit(sichtbarkeit);
+      sichtbarkeit = !sichtbarkeit;
+      if (simulationsController.simulationsView.getIsEditor())
+      {
+        simulationsController.simulationsView.wechsleModus();
+      }
     }
   }
 
@@ -109,18 +135,11 @@ public class ButtonController implements ActionListener, MouseListener, ChangeLi
     simulationsController.positionsThread.suspend();
     simulationsController.repaintThread.suspend();
 
-    if (simulationsController.simulationsView.getIsEditor())
-    {
-      simulationsController.simulationsView.wechsleModus();
-    }
-
     simulationsController.simulationsModel.setAktuellesSzenario(szenario);
     simulationsController.simulationsModel.modelZuruecksetzen();
     simulationsController.simulationsView.zuruecksetzen();
-    simulationsController.simulationsView.setMenuePanelSichtbarkeit(sichtbarkeit);
     simulationsController.simulationsView.repaint();
 
-    sichtbarkeit = !sichtbarkeit;
   }
 
   /**
@@ -189,19 +208,23 @@ public class ButtonController implements ActionListener, MouseListener, ChangeLi
   @Override
   public void stateChanged(ChangeEvent event)
   {
-    JSlider source = (JSlider) event.getSource();
-    int neueDt = source.getValue();
-    simulationsController.simulationsModel.setDt(neueDt);
-    simulationsController.simulationsView.updateSlider();
-
-    // if (source instanceof JSlider)
-    // {
-    // JSlider slider = (JSlider) source;
-    // String name = slider.getName();
-    // if ("funky".equals(name))
-    // {
-    // // Do funky stuff
-    // }
-    // }
+    JSlider slider = (JSlider) event.getSource();
+    String name = slider.getName();
+    if (name.equals("animationsGeschwindigkeit"))
+    {
+      int neueDt = slider.getValue();
+      simulationsController.simulationsModel.setDt(neueDt);
+      simulationsController.simulationsView.updateSliderLabel();
+    }
+    else
+    {
+      int index = Integer.parseInt(name);
+      double faktor = (double) slider.getValue() / 100;
+      double neueMasse = 5.972E24 * faktor;
+      simulationsController.simulationsModel.getPlaneten()
+          .get(index)
+          .setMasse(neueMasse);
+      simulationsController.simulationsView.updateSliderLabel();
+    }
   }
 }

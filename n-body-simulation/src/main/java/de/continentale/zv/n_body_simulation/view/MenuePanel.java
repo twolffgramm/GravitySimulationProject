@@ -67,6 +67,11 @@ public class MenuePanel extends JPanel
     szenario3.setForeground(Color.WHITE);
     szenario4.setForeground(Color.WHITE);
 
+    szenario1.setOpaque(true);
+    szenario2.setOpaque(true);
+    szenario3.setOpaque(true);
+    szenario4.setOpaque(true);
+
     szenario1.setActionCommand("Figure-Eight");
     szenario2.setActionCommand("Sonnensystem");
     szenario3.setActionCommand("Binary-Star System");

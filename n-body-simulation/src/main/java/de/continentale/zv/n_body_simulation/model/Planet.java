@@ -1,6 +1,7 @@
 package de.continentale.zv.n_body_simulation.model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * TODO Klasse kommentieren
@@ -20,6 +21,7 @@ public class Planet
   double radius;
   String farbe;
   ArrayList<Vector2D> vorherigePositionen;
+  Random random;
 
   /**
    * Planet Konstruktor.
@@ -35,7 +37,9 @@ public class Planet
     this.masse = masse;
     this.impuls = this.geschwindigkeit.multiply(this.masse);
     this.radius = 20;
-    this.farbe = "#FFFFFF";
+    random = new Random();
+    int randomInt = random.nextInt(16777215);
+    this.farbe = "#" + Integer.toHexString(randomInt);
     vorherigePositionen = new ArrayList<>();
     vorherigePositionen.add(this.position);
   }

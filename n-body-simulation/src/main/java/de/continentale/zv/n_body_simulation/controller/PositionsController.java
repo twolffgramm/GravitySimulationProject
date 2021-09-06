@@ -1,10 +1,16 @@
 package de.continentale.zv.n_body_simulation.controller;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import de.continentale.zv.n_body_simulation.model.SimulationsModel;
 import de.continentale.zv.n_body_simulation.model.Vector2D;
+import de.continentale.zv.n_body_simulation.view.SimulationsView;
 
 /**
  * TODO Klasse kommentieren
@@ -17,15 +23,18 @@ import de.continentale.zv.n_body_simulation.model.Vector2D;
 public class PositionsController implements Runnable
 {
   SimulationsModel simulationsModel;
+  SimulationsView simulationsView;
 
   /**
    * PositionsController Konstruktor.
    *
    * @param simulationsModel
+   * @param simulationsView
    */
-  public PositionsController(SimulationsModel simulationsModel)
+  public PositionsController(SimulationsModel simulationsModel, SimulationsView simulationsView)
   {
     this.simulationsModel = simulationsModel;
+    this.simulationsView = simulationsView;
   }
 
   void aktualisierePlaneten()
@@ -35,6 +44,11 @@ public class PositionsController implements Runnable
         .size() - 1; i++)
     {
       Vector2D kraft = berechneKraft(i);
+      if (simulationsView.getRepulsion())
+      {
+        Vector2D repulsion = berechneRepulsion(i);
+        kraft = kraft.add(repulsion.multiply(1E22));
+      }
       kraftAnwenden(kraft, i);
       aktualisierePosition(i);
       speichereVorherigePosition(i);
@@ -84,6 +98,51 @@ public class PositionsController implements Runnable
     }
 
     return insgKraft;
+  }
+
+  Vector2D berechneRepulsion(int aktuellerPlanet)
+  {
+    Point linksOben = simulationsView.getLinksOben();
+
+    Map<String, Vector2D> abstaende = new HashMap<>();
+    abstaende.put("abstandOben", new Vector2D(0, simulationsModel.getPlaneten()
+        .get(aktuellerPlanet)
+        .getPosition()
+        .getY() / simulationsModel.getZoomFaktor() - linksOben.y));
+    abstaende.put("abstandUnten", new Vector2D(0, simulationsModel.getPlaneten()
+        .get(aktuellerPlanet)
+        .getPosition()
+        .getY() / simulationsModel.getZoomFaktor() - linksOben.y - 950));
+    abstaende.put("abstandLinks", new Vector2D(simulationsModel.getPlaneten()
+        .get(aktuellerPlanet)
+        .getPosition()
+        .getX() / simulationsModel.getZoomFaktor() - linksOben.x, 0));
+    abstaende.put("abstandRechts", new Vector2D(simulationsModel.getPlaneten()
+        .get(aktuellerPlanet)
+        .getPosition()
+        .getX() / simulationsModel.getZoomFaktor() - linksOben.x - 1000, 0));
+
+    Object[] vectoren = abstaende.values()
+        .toArray();
+    double[] magnituden = new double[4];
+    for (int i = 0; i < vectoren.length; i++)
+    {
+      magnituden[i] = Vector2D.magnitude((Vector2D) vectoren[i]);
+    }
+    Arrays.sort(magnituden);
+    double min = magnituden[0];
+
+    String which = "";
+    for (Entry<String, Vector2D> entry : abstaende.entrySet())
+    {
+      if (Vector2D.magnitude(entry.getValue()) == min)
+      {
+        which = entry.getKey();
+      }
+    }
+
+    Vector2D repulsionsRichtung = abstaende.get(which);
+    return repulsionsRichtung;
   }
 
   void kraftAnwenden(Vector2D insgKraft, int aktuellerPlanet)
@@ -137,20 +196,6 @@ public class PositionsController implements Runnable
     this.simulationsModel.getPlaneten()
         .get(aktuellerPlanet)
         .setVorherigePositionen(vorherigePositionen);
-
-    // if (aktuellerPlanet == 3)
-    // {
-    // System.out.println(vorherigePositionen.get(vorherigePositionen.size() - 1)
-    // .toString() + " --> 1.");
-    // System.out.println(this.simulationsModel.getPlaneten()
-    // .get(aktuellerPlanet)
-    // .getVorherigePositionen()
-    // .get(this.simulationsModel.getPlaneten()
-    // .get(aktuellerPlanet)
-    // .getVorherigePositionen()
-    // .size() - 1)
-    // .toString() + " --> aus pos.Controller");
-    // }
   }
 
   @SuppressWarnings("unused")

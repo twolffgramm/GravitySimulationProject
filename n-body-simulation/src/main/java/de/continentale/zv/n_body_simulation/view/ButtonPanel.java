@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -46,6 +47,7 @@ public class ButtonPanel extends JPanel
   JPanel platzhalterRechts;
   JSlider animationsGeschwindigkeitSlider;
   JLabel animationsGeschwindigkeitLabel;
+  JCheckBox repulsion;
 
   /**
    * ButtonPanel Konstruktor.
@@ -78,23 +80,28 @@ public class ButtonPanel extends JPanel
     animationsGeschwindigkeitLabel.setForeground(Color.WHITE);
     animationsGeschwindigkeitSlider.setName("animationsGeschwindigkeit");
 
+    repulsion = new JCheckBox("Repulsion");
+    repulsion.setBackground(Color.decode("#1F1F1F"));
+    repulsion.setForeground(Color.WHITE);
+
     try
     {
       Image szenarienIcon = ImageIO.read(getClass().getResource("/BurgerMenu.png"));
       Image startIcon = ImageIO.read(getClass().getResource("/Play.png"));
       Image pauseIcon = ImageIO.read(getClass().getResource("/Pause.png"));
       Image zuruecksetzenIcon = ImageIO.read(getClass().getResource("/Reset.png"));
-
+      Image editorIcon = ImageIO.read(getClass().getResource("/Edit.png"));
       szenarienIcon = szenarienIcon.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
       startIcon = startIcon.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
       pauseIcon = pauseIcon.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
       zuruecksetzenIcon = zuruecksetzenIcon.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+      editorIcon = editorIcon.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 
       szenarien = new JButton(new ImageIcon(szenarienIcon));
       start = new JButton(new ImageIcon(startIcon));
       pause = new JButton(new ImageIcon(pauseIcon));
       zuruecksetzen = new JButton(new ImageIcon(zuruecksetzenIcon));
-      editor = new JButton("Editor");
+      editor = new JButton(new ImageIcon(editorIcon));
     }
     catch (Exception ex)
     {
@@ -121,6 +128,12 @@ public class ButtonPanel extends JPanel
     zuruecksetzen.setBackground(Color.decode("#131313"));
     editor.setBackground(Color.decode("#131313"));
 
+    szenarien.setOpaque(true);
+    start.setOpaque(true);
+    pause.setOpaque(true);
+    zuruecksetzen.setOpaque(true);
+    editor.setOpaque(true);
+
     szenarien.setActionCommand("szenarien");
     start.setActionCommand("start");
     pause.setActionCommand("pause");
@@ -137,6 +150,8 @@ public class ButtonPanel extends JPanel
 
     this.platzhalterRechts.add(animationsGeschwindigkeitSlider);
     this.platzhalterRechts.add(animationsGeschwindigkeitLabel);
+
+    this.platzhalterLinks.add(repulsion);
   }
 
   /**
@@ -173,6 +188,14 @@ public class ButtonPanel extends JPanel
   {
     animationsGeschwindigkeitLabel
         .setText(this.simulationsModel.getAnimationsGeschwindigkeitString());
+  }
+
+  /**
+   * @return .
+   */
+  public boolean getRepulsion()
+  {
+    return repulsion.isSelected();
   }
 
 }

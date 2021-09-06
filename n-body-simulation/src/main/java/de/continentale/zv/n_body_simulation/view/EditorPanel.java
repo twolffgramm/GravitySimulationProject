@@ -22,7 +22,7 @@ public class EditorPanel extends JPanel
   /** serialVersionUID */
   private static final long serialVersionUID = 1L;
 
-  JPanel sliderPanel;
+  EditorSliderPanel sliderPanel;
   SimulationsPanel simulationsPanel;
   ButtonPanel buttonPanel;
 
@@ -41,20 +41,23 @@ public class EditorPanel extends JPanel
 
     this.buttonPanel = new ButtonPanel(simulationsModel);
     this.simulationsPanel = new SimulationsPanel(simulationsModel, breite, hoehe);
-    this.sliderPanel = new JPanel();
+    this.sliderPanel = new EditorSliderPanel(simulationsModel);
 
     GroupLayout groupLayout = new GroupLayout(this);
     this.setLayout(groupLayout);
 
-    this.add(buttonPanel);
-    this.add(simulationsPanel);
+    // this.add(buttonPanel);
+    // this.add(simulationsPanel);
 
     groupLayout.setVerticalGroup(groupLayout.createSequentialGroup()
         .addComponent(buttonPanel)
+        .addComponent(sliderPanel)
         .addComponent(simulationsPanel));
     groupLayout.setHorizontalGroup(groupLayout.createParallelGroup()
         .addComponent(buttonPanel)
+        .addComponent(sliderPanel)
         .addComponent(simulationsPanel));
+
   }
 
   void paint()
@@ -69,6 +72,7 @@ public class EditorPanel extends JPanel
   {
     buttonPanel.sliderZuruecksetzen();
     simulationsPanel.zuruecksetzen();
+    sliderPanel.zuruecksetzen();
   }
 
   /**
@@ -87,7 +91,66 @@ public class EditorPanel extends JPanel
       SimulationsInteraktionsController simulationsInteraktionsController)
   {
     buttonPanel.registerListener(buttonController);
+    sliderPanel.registerListener(buttonController);
     simulationsPanel.registerListener(simulationsInteraktionsController);
+  }
+
+  /**
+   * 
+   */
+  public void updateSliderLabel()
+  {
+    sliderPanel.updateSliderLabel();
+    buttonPanel.updateSliderLabel();
+  }
+
+  /**
+   * 
+   */
+  public void erstelleSlider()
+  {
+    sliderPanel.erstelleSlider();
+  }
+
+  /**
+   * @return .
+   */
+  public Point getUrsprung()
+  {
+    return simulationsPanel.getUrsprung();
+  }
+
+  /**
+   * @param mausGedrueckt
+   * @param koordinatenMausGedrueckt
+   */
+  public void setMausGedrueckt(boolean mausGedrueckt, Point koordinatenMausGedrueckt)
+  {
+    simulationsPanel.setMausGedrueckt(mausGedrueckt, koordinatenMausGedrueckt);
+  }
+
+  /**
+   * @param geschwindigkeitsLinie
+   */
+  public void setGeschwindigkeitsLinie(Point geschwindigkeitsLinie)
+  {
+    simulationsPanel.setGeschwindigkeitsLinie(geschwindigkeitsLinie);
+  }
+
+  /**
+   * @return .
+   */
+  public Point getLinksOben()
+  {
+    return simulationsPanel.getLinksOben();
+  }
+
+  /**
+   * @return .
+   */
+  public boolean getRepulsion()
+  {
+    return buttonPanel.getRepulsion();
   }
 
 }

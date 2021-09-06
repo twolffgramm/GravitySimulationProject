@@ -45,27 +45,26 @@ public class SimulationsView extends JFrame
   {
     this.isEditor = false;
     this.simulationsModel = simulationsModel;
+
     buttonPanel = new ButtonPanel(this.simulationsModel);
     simulationsPanel = new SimulationsPanel(this.simulationsModel, 1000, 1000);
-
-    editorPanel = new EditorPanel(this.simulationsModel, 800, 1000);
-
+    editorPanel = new EditorPanel(this.simulationsModel, 1000, 950);
     menuePanel = new MenuePanel();
     menuePanel.setAlignmentY(0.47f);
+    menuePanel.setVisible(false);
+
     hauptPanel = new JPanel();
-
     GroupLayout groupLayout = new GroupLayout(hauptPanel);
-    hauptPanel.setLayout(groupLayout);
-
-    hauptPanel.add(buttonPanel);
-    hauptPanel.add(simulationsPanel);
-
     groupLayout.setVerticalGroup(groupLayout.createSequentialGroup()
         .addComponent(buttonPanel)
         .addComponent(simulationsPanel));
     groupLayout.setHorizontalGroup(groupLayout.createParallelGroup()
         .addComponent(buttonPanel)
         .addComponent(simulationsPanel));
+    hauptPanel.setLayout(groupLayout);
+
+    // hauptPanel.add(buttonPanel);
+    // hauptPanel.add(simulationsPanel);
 
     Container contentPane = this.getContentPane();
     OverlayLayout overlayLayout = new OverlayLayout(contentPane);
@@ -73,6 +72,7 @@ public class SimulationsView extends JFrame
 
     this.add(menuePanel);
     this.add(hauptPanel);
+    this.add(editorPanel);
 
     this.setTitle("Gravitations Simulation");
     this.setResizable(false);
@@ -81,7 +81,6 @@ public class SimulationsView extends JFrame
     this.pack();
     this.setVisible(true);
     this.setLocationRelativeTo(null);
-    menuePanel.setVisible(false);
   }
 
   void paint()
@@ -151,9 +150,21 @@ public class SimulationsView extends JFrame
   /**
    * 
    */
-  public void updateSlider()
+  public void updateSliderLabel()
   {
     buttonPanel.updateSliderLabel();
+    if (isEditor)
+    {
+      editorPanel.updateSliderLabel();
+    }
+  }
+
+  /**
+   * 
+   */
+  public void erstelleSlider()
+  {
+    editorPanel.erstelleSlider();
   }
 
   /**
@@ -163,7 +174,7 @@ public class SimulationsView extends JFrame
   {
     if (isEditor == false)
     {
-      this.add(editorPanel);
+
       hauptPanel.setVisible(false);
       editorPanel.setVisible(true);
 
@@ -182,5 +193,74 @@ public class SimulationsView extends JFrame
   public boolean getIsEditor()
   {
     return this.isEditor;
+  }
+
+  /**
+   * @return .
+   */
+  public Point getUrsprung()
+  {
+    if (isEditor == false)
+    {
+      return simulationsPanel.getUrsprung();
+    }
+    else
+    {
+      return editorPanel.getUrsprung();
+    }
+  }
+
+  /**
+   * @param mausGedrueckt
+   * @param koordinatenMausGedrueckt
+   */
+  public void setMausGedrueckt(boolean mausGedrueckt, Point koordinatenMausGedrueckt)
+  {
+    if (isEditor == false)
+    {
+      simulationsPanel.setMausGedrueckt(mausGedrueckt, koordinatenMausGedrueckt);
+    }
+    else
+    {
+      editorPanel.setMausGedrueckt(mausGedrueckt, koordinatenMausGedrueckt);
+    }
+  }
+
+  /**
+   * @param geschwindigkeitsLinie
+   */
+  public void setGeschwindigkeitsLinie(Point geschwindigkeitsLinie)
+  {
+    if (isEditor == false)
+    {
+      simulationsPanel.setGeschwindigkeitsLinie(geschwindigkeitsLinie);
+    }
+    else
+    {
+      editorPanel.setGeschwindigkeitsLinie(geschwindigkeitsLinie);
+    }
+  }
+
+  /**
+   * @return .
+   */
+  public Point getLinksOben()
+  {
+    return editorPanel.getLinksOben();
+  }
+
+  /**
+   * @return .
+   */
+  public boolean getRepulsion()
+  {
+    if (isEditor == false)
+    {
+      return buttonPanel.getRepulsion();
+    }
+    else
+    {
+      return editorPanel.getRepulsion();
+    }
   }
 }

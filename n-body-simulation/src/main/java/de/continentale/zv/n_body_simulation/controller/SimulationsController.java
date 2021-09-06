@@ -31,7 +31,7 @@ public class SimulationsController
     this.simulationsModel = simulationsModel;
     this.simulationsView = simulationsView;
     repaintController = new RepaintController(simulationsView);
-    positionsController = new PositionsController(simulationsModel);
+    positionsController = new PositionsController(simulationsModel, simulationsView);
     positionsThread = new Thread(positionsController);
     repaintThread = new Thread(repaintController);
   }

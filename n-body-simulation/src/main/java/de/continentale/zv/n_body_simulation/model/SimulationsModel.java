@@ -1,6 +1,5 @@
 package de.continentale.zv.n_body_simulation.model;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -163,14 +162,13 @@ public class SimulationsModel
   }
 
   /**
-   * @param klick
-   * @param ursprung
+   * @param position
+   * @param geschwindigkeit
    */
-  public void planetHinzufuegen(Point klick, Point ursprung)
+  public void planetHinzufuegen(Vector2D position, Vector2D geschwindigkeit)
   {
-    this.planeten.add(new Planet(
-        new Vector2D((klick.x - ursprung.x) * zoomFaktor, (klick.y - ursprung.y) * zoomFaktor),
-        new Vector2D(), 5E24));
+    this.planeten
+        .add(new Planet(position.multiply(zoomFaktor), geschwindigkeit.multiply(10), 5.972E24));
   }
 
   /**
