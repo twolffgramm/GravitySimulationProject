@@ -1,6 +1,7 @@
 package de.continentale.zv.n_body_simulation.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * TODO Klasse kommentieren
@@ -16,25 +17,38 @@ public class SimulationsModel
   Vector2D massenSchwerpunkt = new Vector2D();
   int dt;
   double zoomFaktor;
+  int minimalerAbstand;
   int aktuellesSzenario;
   Szenario szenario;
 
   /**
    * SimulationsModel Konstruktor.
    * 
-   * @param szenario
-   * @param aktuellesSzenario
+   * @param szenario .
+   * @param aktuellesSzenario .
    */
   public SimulationsModel(Szenario szenario, int aktuellesSzenario)
   {
     for (int i = 0; i <= szenario.positionen.length - 1; i++)
     {
-      this.planeten.add(new Planet(szenario.positionen[i], szenario.geschwindigkeiten[i],
-          szenario.massen[i], szenario.radii[i], szenario.farben[i]));
+      this.planeten.add(new Planet(szenario.getPositionen()[i], szenario.getGeschwindigkeiten()[i],
+          szenario.getMassen()[i], szenario.getRadii()[i], szenario.getFarben()[i]));
     }
     this.dt = szenario.dt;
     this.zoomFaktor = szenario.zoomFaktor;
+    this.minimalerAbstand = 0;
     this.aktuellesSzenario = aktuellesSzenario;
+    this.szenario = new Szenario(aktuellesSzenario);
+  }
+
+  /**
+   * @param position .
+   * @param geschwindigkeit .
+   */
+  public void planetHinzufuegen(Vector2D position, Vector2D geschwindigkeit)
+  {
+    this.planeten
+        .add(new Planet(position.multiply(zoomFaktor), geschwindigkeit.multiply(10), 5.972E24));
   }
 
   /**
@@ -46,8 +60,8 @@ public class SimulationsModel
     szenario = new Szenario(aktuellesSzenario);
     for (int i = 0; i <= szenario.positionen.length - 1; i++)
     {
-      planeten.add(new Planet(szenario.positionen[i], szenario.geschwindigkeiten[i],
-          szenario.massen[i], szenario.radii[i], szenario.farben[i]));
+      planeten.add(new Planet(szenario.getPositionen()[i], szenario.getGeschwindigkeiten()[i],
+          szenario.getMassen()[i], szenario.getRadii()[i], szenario.getFarben()[i]));
     }
     this.dt = szenario.dt;
     this.zoomFaktor = szenario.zoomFaktor;
@@ -70,14 +84,6 @@ public class SimulationsModel
   }
 
   /**
-   * @param massenSchwerpunkt
-   */
-  public void setCOM(Vector2D massenSchwerpunkt)
-  {
-    this.massenSchwerpunkt = massenSchwerpunkt;
-  }
-
-  /**
    * @return .
    */
   public int getDt()
@@ -95,35 +101,22 @@ public class SimulationsModel
   }
 
   /**
-   * @param aenderung
+   * @return .
    */
-  public void setZoomFaktor(double aenderung)
+  public double getMaxMasse()
   {
-    aenderung = aenderung * this.zoomFaktor / 10;
-    this.zoomFaktor -= aenderung;
-  }
-
-  /**
-   * @param aenderung
-   */
-  public void setRadius(double aenderung)
-  {
+    double[] massen = new double[planeten.size()];
     for (int i = 0; i < planeten.size(); i++)
     {
-      double radius = planeten.get(i)
-          .getRadius();
-      radius = radius + aenderung / 2;
-      planeten.get(i)
-          .setRadius(radius);
+      massen[i] = planeten.get(i)
+          .getMasse();
     }
-  }
-
-  /**
-   * @param dt
-   */
-  public void setDt(int dt)
-  {
-    this.dt = dt;
+    if (massen.length == 0)
+    {
+      massen[0] = 5E24;
+    }
+    Arrays.sort(massen);
+    return massen[massen.length - 1];
   }
 
   /**
@@ -162,20 +155,67 @@ public class SimulationsModel
   }
 
   /**
-   * @param position
-   * @param geschwindigkeit
+   * @return .
    */
-  public void planetHinzufuegen(Vector2D position, Vector2D geschwindigkeit)
+  public int getMinimalerAbstand()
   {
-    this.planeten
-        .add(new Planet(position.multiply(zoomFaktor), geschwindigkeit.multiply(10), 5.972E24));
+    return this.minimalerAbstand;
   }
 
   /**
-   * @param szenario
+   * @param massenSchwerpunkt .
+   */
+  public void setCOM(Vector2D massenSchwerpunkt)
+  {
+    this.massenSchwerpunkt = massenSchwerpunkt;
+  }
+
+  /**
+   * @param dt .
+   */
+  public void setDt(int dt)
+  {
+    this.dt = dt;
+  }
+
+  /**
+   * @param aenderung .
+   */
+  public void setZoomFaktor(double aenderung)
+  {
+    aenderung = aenderung * this.zoomFaktor / 10;
+    this.zoomFaktor -= aenderung;
+  }
+
+  /**
+   * @param aenderung .
+   */
+  public void setRadius(double aenderung)
+  {
+    for (int i = 0; i < planeten.size(); i++)
+    {
+      double radius = planeten.get(i)
+          .getRadius();
+      radius = radius + aenderung / 2;
+      planeten.get(i)
+          .setRadius(radius);
+    }
+  }
+
+  /**
+   * @param szenario .
    */
   public void setAktuellesSzenario(int szenario)
   {
     this.aktuellesSzenario = szenario;
   }
+
+  /**
+   * @param minimalerAbstand .
+   */
+  public void setMinimalerAbstand(int minimalerAbstand)
+  {
+    this.minimalerAbstand = minimalerAbstand;
+  }
+
 }

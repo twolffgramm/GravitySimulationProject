@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="6.11.2">
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\controller\ButtonController.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\controller\PositionsController.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\controller\RepaintController.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\controller\SimulationsController.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\controller\SimulationsInteraktionsController.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\main\SchwerkraftSimulation.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\model\Planet.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\model\SimulationsModel.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\model\Szenario.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\model\Vector2D.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\view\ButtonPanel.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\view\EditorPanel.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\view\EditorSliderPanel.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\view\MenuePanel.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\view\SimulationsPanel.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\src\main\java\de\continentale\zv\n_body_simulation\view\SimulationsView.java">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\target\classes\version.properties">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\target\maven-archiver\pom.properties">
+</file>
+<file name="C:\devel\e2020-03\ws\n-body-simulation\target\version.properties">
+</file>
+</checkstyle>

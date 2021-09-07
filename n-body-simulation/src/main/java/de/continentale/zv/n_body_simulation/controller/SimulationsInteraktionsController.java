@@ -30,7 +30,7 @@ public class SimulationsInteraktionsController
   /**
    * SimulationsInteraktionsController Konstruktor.
    *
-   * @param simulationsController
+   * @param simulationsController .
    */
   public SimulationsInteraktionsController(SimulationsController simulationsController)
   {

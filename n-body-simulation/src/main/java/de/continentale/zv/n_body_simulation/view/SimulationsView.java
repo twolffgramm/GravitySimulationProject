@@ -27,8 +27,7 @@ public class SimulationsView extends JFrame
   private static final long serialVersionUID = 1L;
 
   ButtonPanel buttonPanel;
-  /** simulationsPanel */
-  public SimulationsPanel simulationsPanel;
+  SimulationsPanel simulationsPanel;
   MenuePanel menuePanel;
   EditorPanel editorPanel;
   SimulationsModel simulationsModel;
@@ -38,7 +37,7 @@ public class SimulationsView extends JFrame
   /**
    * SimulationsView Konstruktor.
    * 
-   * @param simulationsModel
+   * @param simulationsModel .
    *
    */
   public SimulationsView(SimulationsModel simulationsModel)
@@ -62,9 +61,6 @@ public class SimulationsView extends JFrame
         .addComponent(buttonPanel)
         .addComponent(simulationsPanel));
     hauptPanel.setLayout(groupLayout);
-
-    // hauptPanel.add(buttonPanel);
-    // hauptPanel.add(simulationsPanel);
 
     Container contentPane = this.getContentPane();
     OverlayLayout overlayLayout = new OverlayLayout(contentPane);
@@ -96,8 +92,8 @@ public class SimulationsView extends JFrame
   }
 
   /**
-   * @param buttonController
-   * @param simulationsInteraktionsController
+   * @param buttonController .
+   * @param simulationsInteraktionsController .
    */
   public void registerListener(ButtonController buttonController,
       SimulationsInteraktionsController simulationsInteraktionsController)
@@ -106,14 +102,6 @@ public class SimulationsView extends JFrame
     menuePanel.registerListener(buttonController);
     simulationsPanel.registerListener(simulationsInteraktionsController);
     editorPanel.registerListener(buttonController, simulationsInteraktionsController);
-  }
-
-  /**
-   * @param sichtbar
-   */
-  public void setMenuePanelSichtbarkeit(boolean sichtbar)
-  {
-    menuePanel.setVisible(sichtbar);
   }
 
   /**
@@ -133,7 +121,7 @@ public class SimulationsView extends JFrame
   }
 
   /**
-   * @param differenz
+   * @param differenz .
    */
   public void updateUrsprung(Point differenz)
   {
@@ -168,7 +156,6 @@ public class SimulationsView extends JFrame
   }
 
   /**
-   * @param isEditor
    */
   public void wechsleModus()
   {
@@ -185,6 +172,45 @@ public class SimulationsView extends JFrame
       editorPanel.setVisible(false);
     }
     isEditor = !isEditor;
+  }
+
+  /**
+   * @param mausGedrueckt .
+   * @param koordinatenMausGedrueckt .
+   */
+  public void setMausGedrueckt(boolean mausGedrueckt, Point koordinatenMausGedrueckt)
+  {
+    if (isEditor == false)
+    {
+      simulationsPanel.setMausGedrueckt(mausGedrueckt, koordinatenMausGedrueckt);
+    }
+    else
+    {
+      editorPanel.setMausGedrueckt(mausGedrueckt, koordinatenMausGedrueckt);
+    }
+  }
+
+  /**
+   * @param geschwindigkeitsLinie .
+   */
+  public void setGeschwindigkeitsLinie(Point geschwindigkeitsLinie)
+  {
+    if (isEditor == false)
+    {
+      simulationsPanel.setGeschwindigkeitsLinie(geschwindigkeitsLinie);
+    }
+    else
+    {
+      editorPanel.setGeschwindigkeitsLinie(geschwindigkeitsLinie);
+    }
+  }
+
+  /**
+   * @param sichtbar .
+   */
+  public void setMenuePanelSichtbarkeit(boolean sichtbar)
+  {
+    menuePanel.setVisible(sichtbar);
   }
 
   /**
@@ -207,37 +233,6 @@ public class SimulationsView extends JFrame
     else
     {
       return editorPanel.getUrsprung();
-    }
-  }
-
-  /**
-   * @param mausGedrueckt
-   * @param koordinatenMausGedrueckt
-   */
-  public void setMausGedrueckt(boolean mausGedrueckt, Point koordinatenMausGedrueckt)
-  {
-    if (isEditor == false)
-    {
-      simulationsPanel.setMausGedrueckt(mausGedrueckt, koordinatenMausGedrueckt);
-    }
-    else
-    {
-      editorPanel.setMausGedrueckt(mausGedrueckt, koordinatenMausGedrueckt);
-    }
-  }
-
-  /**
-   * @param geschwindigkeitsLinie
-   */
-  public void setGeschwindigkeitsLinie(Point geschwindigkeitsLinie)
-  {
-    if (isEditor == false)
-    {
-      simulationsPanel.setGeschwindigkeitsLinie(geschwindigkeitsLinie);
-    }
-    else
-    {
-      editorPanel.setGeschwindigkeitsLinie(geschwindigkeitsLinie);
     }
   }
 

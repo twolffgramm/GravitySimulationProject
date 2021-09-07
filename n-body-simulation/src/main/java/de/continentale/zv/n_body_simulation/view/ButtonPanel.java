@@ -46,13 +46,14 @@ public class ButtonPanel extends JPanel
   JPanel platzhalterLinks;
   JPanel platzhalterRechts;
   JSlider animationsGeschwindigkeitSlider;
+  JSlider minimalerAbstandsSlider;
   JLabel animationsGeschwindigkeitLabel;
   JCheckBox repulsion;
 
   /**
    * ButtonPanel Konstruktor.
    * 
-   * @param simulationsModel
+   * @param simulationsModel .
    *
    */
   public ButtonPanel(SimulationsModel simulationsModel)
@@ -74,11 +75,16 @@ public class ButtonPanel extends JPanel
         new JSlider(JSlider.HORIZONTAL, DT_MIN, DT_MAX, this.simulationsModel.getDt());
     animationsGeschwindigkeitSlider.setPreferredSize(new Dimension(300, 20));
     animationsGeschwindigkeitSlider.setBackground(Color.decode("#1F1F1F"));
+    animationsGeschwindigkeitSlider.setName("animationsGeschwindigkeit");
 
     animationsGeschwindigkeitLabel =
         new JLabel(this.simulationsModel.getAnimationsGeschwindigkeitString());
     animationsGeschwindigkeitLabel.setForeground(Color.WHITE);
-    animationsGeschwindigkeitSlider.setName("animationsGeschwindigkeit");
+
+    minimalerAbstandsSlider = new JSlider(JSlider.HORIZONTAL, 0, 5, 0);
+    minimalerAbstandsSlider.setPreferredSize(new Dimension(200, 20));
+    minimalerAbstandsSlider.setBackground(Color.decode("#1F1F1F"));
+    minimalerAbstandsSlider.setName("minimalerAbstand");
 
     repulsion = new JCheckBox("Repulsion");
     repulsion.setBackground(Color.decode("#1F1F1F"));
@@ -152,10 +158,11 @@ public class ButtonPanel extends JPanel
     this.platzhalterRechts.add(animationsGeschwindigkeitLabel);
 
     this.platzhalterLinks.add(repulsion);
+    this.platzhalterLinks.add(minimalerAbstandsSlider);
   }
 
   /**
-   * @param buttonController
+   * @param buttonController .
    */
   public void registerListener(ButtonController buttonController)
   {
@@ -170,7 +177,7 @@ public class ButtonPanel extends JPanel
       }
     }
     animationsGeschwindigkeitSlider.addChangeListener(buttonController);
-
+    minimalerAbstandsSlider.addChangeListener(buttonController);
   }
 
   /**

@@ -19,7 +19,7 @@ public class SchwerkraftSimulation
 {
 
   /**
-   * @param args
+   * @param args .
    */
   public static void main(String[] args)
   {

@@ -23,8 +23,8 @@ public class SimulationsController
   /**
    * SimulationsController Konstruktor.
    *
-   * @param simulationsModel
-   * @param simulationsView
+   * @param simulationsModel .
+   * @param simulationsView .
    */
   public SimulationsController(SimulationsModel simulationsModel, SimulationsView simulationsView)
   {

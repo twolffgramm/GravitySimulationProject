@@ -44,13 +44,16 @@ public class SimulationsPanel extends JPanel
   boolean mausGedrueckt;
   Point koordinatenMausGedrueckt;
   Point geschwindigkeitsLinie = new Point();
+  boolean fixiereCOM = true;
+  // Vector2D prevCOM;
+  // Vector2D difCOM;
 
   /**
    * SimulationsPanel Konstruktor.
    * 
-   * @param simulationsModel
-   * @param breite
-   * @param hoehe
+   * @param simulationsModel .
+   * @param breite .
+   * @param hoehe .
    *
    */
   public SimulationsPanel(SimulationsModel simulationsModel, int breite, int hoehe)
@@ -63,6 +66,8 @@ public class SimulationsPanel extends JPanel
     this.simulationsModel = simulationsModel;
     this.setFocusable(true);
     this.setPreferredSize(frameGroesse);
+    // prevCOM = this.simulationsModel.getCOM();
+    // difCOM = new Vector2D();
 
     try
     {
@@ -86,16 +91,46 @@ public class SimulationsPanel extends JPanel
   {
     image = createImage(getWidth(), getHeight());
     graphics = image.getGraphics();
+
+    // if (fixiereCOM)
+    // {
+    // System.out.println("am doing it");
+    // Vector2D com = simulationsModel.getCOM();
+    // difCOM = difCOM.add(Vector2D.difference(prevCOM, com)
+    // .multiply(1 / simulationsModel.getZoomFaktor()));
+    // Point differenz = new Point();
+    // if ((int) difCOM.getX() >= 1 && (int) difCOM.getY() >= 1)
+    // {
+    // differenz.setLocation(difCOM.getX(), difCOM.getY());
+    // updateUrsprung(differenz);
+    // difCOM.set(0, 0);
+    // }
+    // else if ((int) difCOM.getX() >= 1)
+    // {
+    // differenz.setLocation(difCOM.getX(), 0);
+    // updateUrsprung(differenz);
+    // difCOM.setX(0);
+    // }
+    // else if ((int) difCOM.getY() >= 1)
+    // {
+    // differenz.setLocation(0, difCOM.getY());
+    // updateUrsprung(differenz);
+    // difCOM.setY(0);
+    // }
+    // prevCOM = com;
+    // }
+
     graphics.translate(ursprung.x, ursprung.y);
     draw(graphics);
     g.drawImage(image, 0, 0, this);
   }
 
   /**
-   * @param g
+   * @param g .
    */
   public void draw(Graphics g)
   {
+
     g.drawImage(hintergrund, linksOben.x - 200, linksOben.y, null);
     for (int i = 0; i <= simulationsModel.getPlaneten()
         .size() - 1; i++)
@@ -171,7 +206,7 @@ public class SimulationsPanel extends JPanel
   }
 
   /**
-   * @param differenz
+   * @param differenz .
    */
   public void updateUrsprung(Point differenz)
   {
@@ -186,19 +221,13 @@ public class SimulationsPanel extends JPanel
   {
     ursprung.setLocation(breite / 2, hoehe / 2);
     linksOben.setLocation(-breite / 2, -hoehe / 2);
+    // prevCOM = this.simulationsModel.getCOM();
+    // difCOM = new Vector2D();
   }
 
   /**
-   * @return .
-   */
-  public Point getUrsprung()
-  {
-    return this.ursprung;
-  }
-
-  /**
-   * @param mausGedrueckt
-   * @param koordinatenMausGedrueckt
+   * @param mausGedrueckt .
+   * @param koordinatenMausGedrueckt .
    */
   public void setMausGedrueckt(boolean mausGedrueckt, Point koordinatenMausGedrueckt)
   {
@@ -207,7 +236,7 @@ public class SimulationsPanel extends JPanel
   }
 
   /**
-   * @param geschwindigkeitsLinie
+   * @param geschwindigkeitsLinie .
    */
   public void setGeschwindigkeitsLinie(Point geschwindigkeitsLinie)
   {
@@ -221,6 +250,14 @@ public class SimulationsPanel extends JPanel
   public Point getLinksOben()
   {
     return this.linksOben;
+  }
+
+  /**
+   * @return .
+   */
+  public Point getUrsprung()
+  {
+    return this.ursprung;
   }
 
 }

@@ -26,9 +26,9 @@ public class Planet
   /**
    * Planet Konstruktor.
    *
-   * @param position
-   * @param geschwindigkeit
-   * @param masse
+   * @param position .
+   * @param geschwindigkeit .
+   * @param masse .
    */
   public Planet(Vector2D position, Vector2D geschwindigkeit, double masse)
   {
@@ -47,11 +47,11 @@ public class Planet
   /**
    * Planet Konstruktor.
    *
-   * @param position
-   * @param geschwindigkeit
-   * @param masse
-   * @param radius
-   * @param farbe
+   * @param position .
+   * @param geschwindigkeit .
+   * @param masse .
+   * @param radius .
+   * @param farbe .
    */
   public Planet(Vector2D position, Vector2D geschwindigkeit, double masse, double radius,
       String farbe)
@@ -131,7 +131,7 @@ public class Planet
   }
 
   /**
-   * @param position
+   * @param position .
    */
   public void setPosition(Vector2D position)
   {
@@ -139,7 +139,7 @@ public class Planet
   }
 
   /**
-   * @param geschwindigkeit
+   * @param geschwindigkeit .
    */
   public void setGeschwindigkeit(Vector2D geschwindigkeit)
   {
@@ -147,7 +147,7 @@ public class Planet
   }
 
   /**
-   * @param beschleunigung
+   * @param beschleunigung .
    */
   public void setBeschleunigung(Vector2D beschleunigung)
   {
@@ -155,7 +155,7 @@ public class Planet
   }
 
   /**
-   * @param impuls
+   * @param impuls .
    */
   public void setImpuls(Vector2D impuls)
   {
@@ -163,7 +163,7 @@ public class Planet
   }
 
   /**
-   * @param masse
+   * @param masse .
    */
   public void setMasse(double masse)
   {
@@ -171,7 +171,7 @@ public class Planet
   }
 
   /**
-   * @param radius
+   * @param radius .
    */
   public void setRadius(double radius)
   {
@@ -179,7 +179,7 @@ public class Planet
   }
 
   /**
-   * @param vorherigePositionen
+   * @param vorherigePositionen .
    */
   public void setVorherigePositionen(ArrayList<Vector2D> vorherigePositionen)
   {

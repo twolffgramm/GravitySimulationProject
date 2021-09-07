@@ -24,12 +24,13 @@ public class PositionsController implements Runnable
 {
   SimulationsModel simulationsModel;
   SimulationsView simulationsView;
+  static final double G = 6.6743E-11;
 
   /**
    * PositionsController Konstruktor.
    *
-   * @param simulationsModel
-   * @param simulationsView
+   * @param simulationsModel .
+   * @param simulationsView .
    */
   public PositionsController(SimulationsModel simulationsModel, SimulationsView simulationsView)
   {
@@ -43,11 +44,11 @@ public class PositionsController implements Runnable
     for (int i = 0; i <= simulationsModel.getPlaneten()
         .size() - 1; i++)
     {
-      Vector2D kraft = berechneKraft(i);
+      Vector2D kraft = berechneGravitationskraft(i);
       if (simulationsView.getRepulsion())
       {
-        Vector2D repulsion = berechneRepulsion(i);
-        kraft = kraft.add(repulsion.multiply(1E22));
+        Vector2D repulsionskraft = berechneRepulsion(i);
+        kraft = kraft.add(repulsionskraft);
       }
       kraftAnwenden(kraft, i);
       aktualisierePosition(i);
@@ -55,7 +56,7 @@ public class PositionsController implements Runnable
     }
   }
 
-  Vector2D berechneKraft(int aktuellerPlanet)
+  Vector2D berechneGravitationskraft(int aktuellerPlanet)
   {
     ArrayList<Vector2D> kraefte = new ArrayList<>();
     Vector2D kraftRichtung;
@@ -64,7 +65,6 @@ public class PositionsController implements Runnable
     double distanzSq;
     double kraft;
     // final double G = 1;
-    final double G = 6.6743E-11;
 
     for (int i = 0; i <= simulationsModel.getPlaneten()
         .size() - 1; i++)
@@ -81,6 +81,14 @@ public class PositionsController implements Runnable
               .get(aktuellerPlanet)
               .getPosition());
       distanz = Vector2D.magnitude(kraftRichtung);
+
+      if (distanz < simulationsModel.getPlaneten()
+          .get(aktuellerPlanet)
+          .getRadius() * simulationsModel.getZoomFaktor() * simulationsModel.getMinimalerAbstand())
+      {
+        continue;
+      }
+
       distanzSq = distanz * distanz;
       kraft = G * simulationsModel.getPlaneten()
           .get(aktuellerPlanet)
@@ -132,17 +140,23 @@ public class PositionsController implements Runnable
     Arrays.sort(magnituden);
     double min = magnituden[0];
 
-    String which = "";
+    String geringsterAbstand = "";
     for (Entry<String, Vector2D> entry : abstaende.entrySet())
     {
       if (Vector2D.magnitude(entry.getValue()) == min)
       {
-        which = entry.getKey();
+        geringsterAbstand = entry.getKey();
       }
     }
 
-    Vector2D repulsionsRichtung = abstaende.get(which);
-    return repulsionsRichtung;
+    Vector2D repulsionsRichtung = abstaende.get(geringsterAbstand);
+    double distanz = min * simulationsModel.getZoomFaktor();
+    double maxMasse = simulationsModel.getMaxMasse();
+    double repulsionsIntensitaet = G * simulationsModel.getPlaneten()
+        .get(aktuellerPlanet)
+        .getMasse() * maxMasse / (distanz * distanz);
+    Vector2D repulsionsKraft = repulsionsRichtung.setMagnitude(repulsionsIntensitaet);
+    return repulsionsKraft;
   }
 
   void kraftAnwenden(Vector2D insgKraft, int aktuellerPlanet)
@@ -229,6 +243,7 @@ public class PositionsController implements Runnable
     simulationsModel.setCOM(simulationsModel.getCOM()
         .multiply(1 / insgMasse));
     // System.out.println(this.simulationsModel.getCOM()
+    // .multiply(1 / this.simulationsModel.getZoomFaktor())
     // .toString());
     // System.out.println(insgImpuls);
   }

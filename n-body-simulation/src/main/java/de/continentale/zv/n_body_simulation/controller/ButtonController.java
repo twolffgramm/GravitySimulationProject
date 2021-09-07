@@ -27,7 +27,7 @@ public class ButtonController implements ActionListener, MouseListener, ChangeLi
   /**
    * ButtonController Konstruktor.
    * 
-   * @param simulationsController
+   * @param simulationsController .
    */
   public ButtonController(SimulationsController simulationsController)
   {
@@ -72,9 +72,10 @@ public class ButtonController implements ActionListener, MouseListener, ChangeLi
       simulationsController.positionsThread.suspend();
       simulationsController.repaintThread.suspend();
 
+      simulationsController.simulationsView.zuruecksetzen();
       simulationsController.simulationsModel.modelZuruecksetzen();
       simulationsController.simulationsView.repaint();
-      simulationsController.simulationsView.zuruecksetzen();
+
     }
     else if (command.equals("editor"))
     {
@@ -215,6 +216,11 @@ public class ButtonController implements ActionListener, MouseListener, ChangeLi
       int neueDt = slider.getValue();
       simulationsController.simulationsModel.setDt(neueDt);
       simulationsController.simulationsView.updateSliderLabel();
+    }
+    else if (name.equals("minimalerAbstand"))
+    {
+      int minimalerAbstand = slider.getValue();
+      simulationsController.simulationsModel.setMinimalerAbstand(minimalerAbstand);
     }
     else
     {

@@ -19,7 +19,7 @@ public class RepaintController implements Runnable
   /**
    * RepaintController Konstruktor.
    * 
-   * @param simulationsView
+   * @param simulationsView .
    *
    */
   public RepaintController(SimulationsView simulationsView)

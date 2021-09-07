@@ -84,7 +84,7 @@ public class MenuePanel extends JPanel
   }
 
   /**
-   * @param buttonController
+   * @param buttonController .
    */
   public void registerListener(ButtonController buttonController)
   {

@@ -1,7 +1,11 @@
 package de.continentale.zv.n_body_simulation.model;
 
 /**
- * TODO Klasse kommentieren
+ * Eine Instanz der Klasse {@code Szenario} hält je nach Angabe des geschwünschten Szenarios Arrays
+ * an {@code Vector2D[]} Positionen, {@code Vector2D[]} Geschwindigkeiten, {@code double[]} Massen,
+ * {@code String[]} Farben, sowie {@code double[]} Radii, die die Startkonditionen darstellen.
+ * Zusätzlich enthält die Instanz einen {@code double} zoomFaktor und ein {@code int} dt -
+ * delta-Zeit.
  * 
  * @author Tim.Wolffgramm
  * @version $Revision:$<br/>
@@ -10,25 +14,48 @@ package de.continentale.zv.n_body_simulation.model;
  */
 public class Szenario
 {
-  /** positionen */
-  public Vector2D[] positionen;
-  /** geschwindigkeiten */
-  public Vector2D[] geschwindigkeiten;
-  /** massen */
-  public double[] massen;
-  /** farben */
-  public String[] farben;
-  /** radii */
-  public double[] radii;
-  /** zoomFaktor */
-  public double zoomFaktor;
-  /** dt */
-  public int dt;
+  /**
+   * Startpositionen der Planeten
+   */
+  Vector2D[] positionen;
 
   /**
-   * Szenario Konstruktor.
+   * Startgeschwindigkeiten der Planeten
+   */
+  Vector2D[] geschwindigkeiten;
+
+  /**
+   * Massen der Planeten
+   */
+  double[] massen;
+
+  /**
+   * Farben der Planeten
+   */
+  String[] farben;
+
+  /**
+   * Radii der Planeten
+   */
+  double[] radii;
+
+  /**
+   * zoomFaktor - wird benötigt um Szenarien mit kleinsten Abständen (wenige hundert Meter) aber
+   * auch interstellaren Abständen (~E9 Meter) darzustellen. Wird zusätzlich bei Mausrad-Bewegung
+   * verändert um Zoomen zu ermöglichen.
+   */
+  double zoomFaktor;
+
+  /**
+   * delta-Time - gibt an wie lange die Kräfte & Geschwindigkeiten pro Berechnung wirken sollen - in
+   * Sekunden.
+   */
+  int dt;
+
+  /**
+   * Konstruiert eine
    *
-   * @param szenarioNummer
+   * @param szenarioNummer .
    */
   public Szenario(int szenarioNummer)
   {
@@ -120,14 +147,44 @@ public class Szenario
     double[] rotierterPunkt = { x, y };
     return rotierterPunkt;
   }
-}
 
-// case 2: // Figure-Eight mit Massen = 1 und kleinen Abständen
-// this.positionen = new Vector2D[] { new Vector2D(0.97000436, -0.24308753),
-// new Vector2D(-0.97000436, 0.24308753), new Vector2D(0, 0) };
-// this.geschwindigkeiten = new Vector2D[] { new Vector2D(0.93240737 / 2, 0.86473146 / 2),
-// new Vector2D(0.93240737 / 2, 0.86473146 / 2), new Vector2D(-0.93240737, -0.86473146) };
-// this.massen = new double[] { 1, 1, 1 };
-// this.dt = 1;
-// this.zoomFaktor = 0.125;
-// break;
+  /**
+   * @return .
+   */
+  public Vector2D[] getPositionen()
+  {
+    return this.positionen;
+  }
+
+  /**
+   * @return .
+   */
+  public Vector2D[] getGeschwindigkeiten()
+  {
+    return this.geschwindigkeiten;
+  }
+
+  /**
+   * @return .
+   */
+  public double[] getMassen()
+  {
+    return this.massen;
+  }
+
+  /**
+   * @return .
+   */
+  public String[] getFarben()
+  {
+    return this.farben;
+  }
+
+  /**
+   * @return .
+   */
+  public double[] getRadii()
+  {
+    return this.radii;
+  }
+}

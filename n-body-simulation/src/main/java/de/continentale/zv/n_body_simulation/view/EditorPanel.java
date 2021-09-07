@@ -29,11 +29,9 @@ public class EditorPanel extends JPanel
   /**
    * EditorPanel Konstruktor.
    *
-   * @param simulationsModel
-   * @param buttonPanel
-   * @param simulationsPanel
-   * @param breite
-   * @param hoehe
+   * @param simulationsModel .
+   * @param breite .
+   * @param hoehe .
    */
   public EditorPanel(SimulationsModel simulationsModel, int breite, int hoehe)
   {
@@ -76,7 +74,7 @@ public class EditorPanel extends JPanel
   }
 
   /**
-   * @param differenz
+   * @param differenz .
    */
   public void updateUrsrpung(Point differenz)
   {
@@ -84,8 +82,8 @@ public class EditorPanel extends JPanel
   }
 
   /**
-   * @param buttonController
-   * @param simulationsInteraktionsController
+   * @param buttonController .
+   * @param simulationsInteraktionsController .
    */
   public void registerListener(ButtonController buttonController,
       SimulationsInteraktionsController simulationsInteraktionsController)
@@ -113,16 +111,8 @@ public class EditorPanel extends JPanel
   }
 
   /**
-   * @return .
-   */
-  public Point getUrsprung()
-  {
-    return simulationsPanel.getUrsprung();
-  }
-
-  /**
-   * @param mausGedrueckt
-   * @param koordinatenMausGedrueckt
+   * @param mausGedrueckt .
+   * @param koordinatenMausGedrueckt .
    */
   public void setMausGedrueckt(boolean mausGedrueckt, Point koordinatenMausGedrueckt)
   {
@@ -130,7 +120,7 @@ public class EditorPanel extends JPanel
   }
 
   /**
-   * @param geschwindigkeitsLinie
+   * @param geschwindigkeitsLinie .
    */
   public void setGeschwindigkeitsLinie(Point geschwindigkeitsLinie)
   {
@@ -151,6 +141,14 @@ public class EditorPanel extends JPanel
   public boolean getRepulsion()
   {
     return buttonPanel.getRepulsion();
+  }
+
+  /**
+   * @return .
+   */
+  public Point getUrsprung()
+  {
+    return simulationsPanel.getUrsprung();
   }
 
 }
