@@ -12,7 +12,7 @@ package de.continentale.zv.n_body_simulation.model;
  */
 public class Vector2D
 {
-  // x und y Komponente des Vektors
+  // x- und y-Koordinate des Vektors
   double x;
   double y;
 
@@ -290,7 +290,7 @@ public class Vector2D
   }
 
   /**
-   * Setzt den {@code Vector2D} auf angegebene {@code double x, double y} - (x, y).
+   * Setzt den {@code Vector2D} auf die angegebenen Koordinaten {@code double x, double y}.
    * 
    * @param x {@code double} - wird gesetzt.
    * @param y {@code double} - wird gesetzt.

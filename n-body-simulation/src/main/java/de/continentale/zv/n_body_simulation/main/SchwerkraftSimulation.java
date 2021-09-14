@@ -2,7 +2,7 @@ package de.continentale.zv.n_body_simulation.main;
 
 import de.continentale.zv.n_body_simulation.controller.ButtonController;
 import de.continentale.zv.n_body_simulation.controller.SimulationsController;
-import de.continentale.zv.n_body_simulation.controller.SimulationsInteraktionsController;
+import de.continentale.zv.n_body_simulation.controller.InteraktionsController;
 import de.continentale.zv.n_body_simulation.model.SimulationsModel;
 import de.continentale.zv.n_body_simulation.model.Szenario;
 import de.continentale.zv.n_body_simulation.view.SimulationsView;
@@ -28,8 +28,8 @@ public class SchwerkraftSimulation
     SimulationsController simulationsController =
         new SimulationsController(simulationsModel, simulationsView);
     ButtonController buttonController = new ButtonController(simulationsController);
-    SimulationsInteraktionsController simulationsInteraktionsController =
-        new SimulationsInteraktionsController(simulationsController);
+    InteraktionsController simulationsInteraktionsController =
+        new InteraktionsController(simulationsController);
 
     simulationsView.registerListener(buttonController, simulationsInteraktionsController);
   }

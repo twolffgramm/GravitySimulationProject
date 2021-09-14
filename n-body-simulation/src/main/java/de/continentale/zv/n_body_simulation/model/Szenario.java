@@ -4,7 +4,7 @@ package de.continentale.zv.n_body_simulation.model;
  * Eine Instanz der Klasse {@code Szenario} hält je nach Angabe des geschwünschten Szenarios Arrays
  * an {@code Vector2D[]} Positionen, {@code Vector2D[]} Geschwindigkeiten, {@code double[]} Massen,
  * {@code String[]} Farben, sowie {@code double[]} Radii, die die Startkonditionen darstellen.
- * Zusätzlich enthält die Instanz einen {@code double} zoomFaktor und ein {@code int} dt -
+ * Zusätzlich enthält die Instanz einen {@code double} zoomFaktor und ein {@code double} dt -
  * delta-Zeit.
  * 
  * @author Tim.Wolffgramm
@@ -30,7 +30,7 @@ public class Szenario
   double[] massen;
 
   /**
-   * Farben der Planeten
+   * Farben der Planeten als Hex-String mit führendem "#".
    */
   String[] farben;
 
@@ -50,28 +50,44 @@ public class Szenario
    * delta-Time - gibt an wie lange die Kräfte & Geschwindigkeiten pro Berechnung wirken sollen - in
    * Sekunden.
    */
-  int dt;
+  double dt;
 
   /**
-   * Konstruiert eine
+   * Konstruiert ein Objekt der {@code Szenario-Klasse} und initialisiert dieses je nach Angabe des
+   * {@code int szenarioNummer}.
    *
-   * @param szenarioNummer .
+   * @param szenarioNummer {@code int} - gibt an, welches Szenario initalisiert werden soll:
+   *          <p>
+   *          0 -> keine Startkonditionen - für den Editor-Modus.
+   *          <p>
+   *          1 -> Figure-Eight mit Erdmassen und stellaren Abständen
+   *          <p>
+   *          2 -> das Sonnensystem, inkl. Pluto
+   *          <p>
+   *          3 -> Binäres Sternensystem mit einem Planeten - allerdings sehr kleine Abstände und
+   *          Massen. Daher ist das Hinzufügen von Planeten während der Simulation nicht möglich, da
+   *          hinzugefügte Planeten Erdmassen besitzen.
+   *          <p>
+   *          4 -> "Chaos-Dreieck". Ein Beispiel für ein scheinbar stabiles System, welches
+   *          grundlegend chaotisch ist. Positions- und Geschwindigkeitsvektroen sind je um 120°
+   *          rotiert.
    */
   public Szenario(int szenarioNummer)
   {
     switch (szenarioNummer)
     {
-      case 0:
+      case 0: // Editor
         this.positionen = new Vector2D[0];
         this.geschwindigkeiten = new Vector2D[0];
         this.massen = new double[0];
         this.dt = 150;
         this.zoomFaktor = 750000;
         break;
+
       case 1: // Figure-Eight mit Erd-Massen und stellaren Abständen
         this.positionen = new Vector2D[] { new Vector2D(291.001308E6, 72.926259E6),
             new Vector2D(-291.001308E6, -72.926259E6), new Vector2D(0, 0) };
-        double factor = 1150;
+        double factor = 1151;
         this.geschwindigkeiten =
             new Vector2D[] { new Vector2D(0.93240737 / 2 * factor, -0.86473146 / 2 * factor),
                 new Vector2D(0.93240737 / 2 * factor, -0.86473146 / 2 * factor),
@@ -120,7 +136,7 @@ public class Szenario
         this.zoomFaktor = 2;
         break;
 
-      case 4: // Figure-Eight mit Erd-Massen und stellaren Abständen
+      case 4: // Chaos-Dreieck
         double[] position1 = { 100, 0 };
         double[] position2 = rotiere(-2.0944, position1);
         double[] position3 = rotiere(-2.0944, position2);
@@ -140,6 +156,9 @@ public class Szenario
     }
   }
 
+  // einfache Methode um einen Punkt, bzw. einen Vektor um den Uhrsprung zu drehen. Drehung um
+  // "double radianten" radianten. Gibt den rotierten Punkt als double[] mit der x-Koordinate in der
+  // nullten und der y-Koordinate in der ersten Stelle.
   double[] rotiere(double radianten, double[] punkt)
   {
     double x = Math.cos(radianten) * punkt[0] - Math.sin(radianten) * punkt[1];
@@ -149,7 +168,10 @@ public class Szenario
   }
 
   /**
-   * @return .
+   * Liefert das {@code Vector2D[]}, welches die Startpositionen der Planeten in m für des jeweilige
+   * Szenario beinhaltet.
+   * 
+   * @return ein {@code Vector2D[]} - die Startpositionen.
    */
   public Vector2D[] getPositionen()
   {
@@ -157,7 +179,10 @@ public class Szenario
   }
 
   /**
-   * @return .
+   * Liefert das {@code Vector2D[]}, welches die Startgeschwindigkeiten der Planeten in m/s für des
+   * jeweilige Szenario beinhaltet.
+   * 
+   * @return ein {@code Vector2D[]} - die Startgeschwindigkeiten.
    */
   public Vector2D[] getGeschwindigkeiten()
   {
@@ -165,7 +190,10 @@ public class Szenario
   }
 
   /**
-   * @return .
+   * Liefert das {@code double[]}, welches die Massen der Planeten in Kilogramm für des jeweilige
+   * Szenario beinhaltet.
+   * 
+   * @return ein {@code double[]} - die Massen.
    */
   public double[] getMassen()
   {
@@ -173,7 +201,10 @@ public class Szenario
   }
 
   /**
-   * @return .
+   * Liefert das {@code String[]}, welches die Farben der Planeten als Hex-Strings mit führendem "#"
+   * für des jeweilige Szenario beinhaltet.
+   * 
+   * @return ein {@code String[]} - die Farben.
    */
   public String[] getFarben()
   {
@@ -181,10 +212,33 @@ public class Szenario
   }
 
   /**
-   * @return .
+   * Liefert das {@code double[]}, welches die Radii der Planeten für des jeweilige Szenario in
+   * Pixel beinhaltet.
+   * 
+   * @return ein {@code double[]} - die Radii.
    */
   public double[] getRadii()
   {
     return this.radii;
+  }
+
+  /**
+   * Liefert den {@code double}, welcher den Zoom-Faktor zu Beginn der Simulation beschreibt.
+   * 
+   * @return ein {@code double} - der Zoom-Faktor.
+   */
+  public double getZoomFaktor()
+  {
+    return this.zoomFaktor;
+  }
+
+  /**
+   * Liefert das {@code double}, welches die delta-Zeit zu Beginn der Simulation beschreibt.
+   * 
+   * @return ein {@code double} - die delta-Zeit, dt.
+   */
+  public double getDt()
+  {
+    return this.dt;
   }
 }

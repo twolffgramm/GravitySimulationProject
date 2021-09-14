@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import de.continentale.zv.n_body_simulation.controller.SimulationsInteraktionsController;
+import de.continentale.zv.n_body_simulation.controller.InteraktionsController;
 import de.continentale.zv.n_body_simulation.model.SimulationsModel;
 import de.continentale.zv.n_body_simulation.model.Vector2D;
 
@@ -79,11 +79,11 @@ public class SimulationsPanel extends JPanel
     }
   }
 
-  void registerListener(SimulationsInteraktionsController simulationsInteraktionsController)
+  void registerListener(InteraktionsController interaktionsController)
   {
-    this.addMouseWheelListener(simulationsInteraktionsController);
-    this.addMouseListener(simulationsInteraktionsController);
-    this.addMouseMotionListener(simulationsInteraktionsController);
+    this.addMouseWheelListener(interaktionsController);
+    this.addMouseListener(interaktionsController);
+    this.addMouseMotionListener(interaktionsController);
   }
 
   @Override
@@ -181,7 +181,7 @@ public class SimulationsPanel extends JPanel
           .getX() / simulationsModel.getZoomFaktor(),
           vorherigePositionen.get(0)
               .getY() / simulationsModel.getZoomFaktor());
-      for (int j = 0; j < vorherigePositionen.size() - 1; j += 5)
+      for (int j = 0; j < vorherigePositionen.size() - 1; j += 1)
       {
         path.lineTo(vorherigePositionen.get(j)
             .getX() / simulationsModel.getZoomFaktor(),

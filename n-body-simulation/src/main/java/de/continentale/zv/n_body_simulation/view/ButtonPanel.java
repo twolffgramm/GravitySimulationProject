@@ -72,7 +72,7 @@ public class ButtonPanel extends JPanel
     platzhalterRechts.setBackground(Color.decode("#1F1F1F"));
 
     animationsGeschwindigkeitSlider =
-        new JSlider(JSlider.HORIZONTAL, DT_MIN, DT_MAX, this.simulationsModel.getDt());
+        new JSlider(JSlider.HORIZONTAL, DT_MIN, DT_MAX, (int) this.simulationsModel.getDt());
     animationsGeschwindigkeitSlider.setPreferredSize(new Dimension(300, 20));
     animationsGeschwindigkeitSlider.setBackground(Color.decode("#1F1F1F"));
     animationsGeschwindigkeitSlider.setName("animationsGeschwindigkeit");
@@ -185,7 +185,7 @@ public class ButtonPanel extends JPanel
    */
   public void sliderZuruecksetzen()
   {
-    this.animationsGeschwindigkeitSlider.setValue(this.simulationsModel.getDt());
+    this.animationsGeschwindigkeitSlider.setValue((int) this.simulationsModel.getDt());
   }
 
   /**

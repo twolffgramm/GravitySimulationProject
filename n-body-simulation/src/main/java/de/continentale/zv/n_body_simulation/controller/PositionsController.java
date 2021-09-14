@@ -40,17 +40,28 @@ public class PositionsController implements Runnable
 
   void aktualisierePlaneten()
   {
+    int anzahlPlaneten = simulationsModel.getPlaneten()
+        .size();
+    Vector2D[] kraefte = new Vector2D[anzahlPlaneten];
 
-    for (int i = 0; i <= simulationsModel.getPlaneten()
-        .size() - 1; i++)
+    for (int i = 0; i < anzahlPlaneten; i++)
     {
-      Vector2D kraft = berechneGravitationskraft(i);
+      kraefte[i] = berechneGravitationskraft(i);
+
       if (simulationsView.getRepulsion())
       {
         Vector2D repulsionskraft = berechneRepulsion(i);
-        kraft = kraft.add(repulsionskraft);
+        kraefte[i] = kraefte[i].add(repulsionskraft);
       }
-      kraftAnwenden(kraft, i);
+    }
+
+    for (int i = 0; i < anzahlPlaneten; i++)
+    {
+      kraftAnwenden(kraefte[i], i);
+    }
+
+    for (int i = 0; i < anzahlPlaneten; i++)
+    {
       aktualisierePosition(i);
       speichereVorherigePosition(i);
     }
@@ -58,13 +69,21 @@ public class PositionsController implements Runnable
 
   Vector2D berechneGravitationskraft(int aktuellerPlanet)
   {
-    ArrayList<Vector2D> kraefte = new ArrayList<>();
+    // Differenzvektor zum anderen Planeten
     Vector2D kraftRichtung;
-    Vector2D insgKraft = new Vector2D();
+
+    // Länge des Differenzvektors, bzw Quadrat der Länge
     double distanz;
     double distanzSq;
+
+    // Gravitationskraft nach Newtonsches Gravitationsgesetz in N
     double kraft;
-    // final double G = 1;
+
+    // Gravitationskräfte zu allen anderen Planeten
+    ArrayList<Vector2D> kraefte = new ArrayList<>();
+
+    // Summe aller Gravitationskräfte für den aktuellen Planeten
+    Vector2D insgKraft = new Vector2D();
 
     for (int i = 0; i <= simulationsModel.getPlaneten()
         .size() - 1; i++)
@@ -242,7 +261,7 @@ public class PositionsController implements Runnable
 
     simulationsModel.setCOM(simulationsModel.getCOM()
         .multiply(1 / insgMasse));
-    // System.out.println(this.simulationsModel.getCOM()
+    // System.out.println(this.simulationsModel.getCOM());
     // .multiply(1 / this.simulationsModel.getZoomFaktor())
     // .toString());
     // System.out.println(insgImpuls);
@@ -253,7 +272,7 @@ public class PositionsController implements Runnable
   public void run()
   {
     int t = 0;
-    int tMax = 24 * simulationsModel.getDt() * 31 * 6;
+    double tMax = 24 * simulationsModel.getDt() * 31 * 6;
 
     while (true)
     {

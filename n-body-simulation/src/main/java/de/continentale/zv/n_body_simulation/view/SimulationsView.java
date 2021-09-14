@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.OverlayLayout;
 
 import de.continentale.zv.n_body_simulation.controller.ButtonController;
-import de.continentale.zv.n_body_simulation.controller.SimulationsInteraktionsController;
+import de.continentale.zv.n_body_simulation.controller.InteraktionsController;
 import de.continentale.zv.n_body_simulation.model.SimulationsModel;
 
 /**
@@ -93,15 +93,15 @@ public class SimulationsView extends JFrame
 
   /**
    * @param buttonController .
-   * @param simulationsInteraktionsController .
+   * @param interaktionsController .
    */
   public void registerListener(ButtonController buttonController,
-      SimulationsInteraktionsController simulationsInteraktionsController)
+      InteraktionsController interaktionsController)
   {
     buttonPanel.registerListener(buttonController);
     menuePanel.registerListener(buttonController);
-    simulationsPanel.registerListener(simulationsInteraktionsController);
-    editorPanel.registerListener(buttonController, simulationsInteraktionsController);
+    simulationsPanel.registerListener(interaktionsController);
+    editorPanel.registerListener(buttonController, interaktionsController);
   }
 
   /**

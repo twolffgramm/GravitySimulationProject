@@ -6,7 +6,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 
 import de.continentale.zv.n_body_simulation.controller.ButtonController;
-import de.continentale.zv.n_body_simulation.controller.SimulationsInteraktionsController;
+import de.continentale.zv.n_body_simulation.controller.InteraktionsController;
 import de.continentale.zv.n_body_simulation.model.SimulationsModel;
 
 /**
@@ -83,14 +83,14 @@ public class EditorPanel extends JPanel
 
   /**
    * @param buttonController .
-   * @param simulationsInteraktionsController .
+   * @param interaktionsController .
    */
   public void registerListener(ButtonController buttonController,
-      SimulationsInteraktionsController simulationsInteraktionsController)
+      InteraktionsController interaktionsController)
   {
     buttonPanel.registerListener(buttonController);
     sliderPanel.registerListener(buttonController);
-    simulationsPanel.registerListener(simulationsInteraktionsController);
+    simulationsPanel.registerListener(interaktionsController);
   }
 
   /**
